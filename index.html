@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2759–2763 Kingston Rd — Development Assessment</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E2C97E;
+      --gold-dim: rgba(201,168,76,0.15);
+      --bg: #0B0E13;
+      --bg2: #111520;
+      --bg3: #161B26;
+      --card: #1A2030;
+      --border: rgba(255,255,255,0.07);
+      --text: #E8EAF0;
+      --muted: #7B8299;
+      --green: #4CAF7D;
+      --red: #E05C5C;
+      --blue: #5B9CF6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(11,14,19,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px;
+    }
+    .nav-brand { font-size: 13px; font-weight: 600; color: var(--gold); letter-spacing: 1px; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 12px; font-weight: 500;
+      letter-spacing: 0.5px; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-badge {
+      background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold); font-size: 11px; font-weight: 600;
+      padding: 3px 10px; border-radius: 20px; letter-spacing: 0.5px;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(160deg, #0F1420 0%, var(--bg) 60%);
+      border-bottom: 1px solid var(--border);
+      padding: 64px 32px 48px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -120px; right: -120px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 12px;
+    }
+    .hero h1 {
+      font-size: clamp(28px, 4vw, 44px); font-weight: 700;
+      color: #fff; line-height: 1.15; margin-bottom: 8px;
+    }
+    .hero-sub {
+      color: var(--muted); font-size: 14px; margin-bottom: 40px;
+    }
+    .hero-sub span { color: var(--text); }
+
+    /* KPI GRID */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      margin-bottom: 0;
+    }
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
+    .kpi-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+    }
+    .kpi-value {
+      font-size: 24px; font-weight: 700; color: var(--gold); line-height: 1;
+      margin-bottom: 4px;
+    }
+    .kpi-note { font-size: 11px; color: var(--muted); }
+
+    /* LAYOUT */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+    .page-content { padding: 0 32px; max-width: 1200px; margin: 0 auto; }
+
+    /* SECTIONS */
+    section { padding: 56px 32px; max-width: 1200px; margin: 0 auto; }
+    section + section { border-top: 1px solid var(--border); }
+    .section-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
+    }
+    .section-title {
+      font-size: 22px; font-weight: 700; color: #fff;
+      margin-bottom: 24px; line-height: 1.2;
+    }
+    .section-desc {
+      color: var(--muted); font-size: 14px; max-width: 680px;
+      line-height: 1.7; margin-bottom: 32px;
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card-title .icon { font-size: 16px; }
+
+    /* TABLES */
+    .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: rgba(255,255,255,0.03); }
+    th {
+      text-align: left; padding: 12px 16px;
+      font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 12px 16px; font-size: 13px; color: var(--text);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .td-gold { color: var(--gold); font-weight: 600; }
+    .td-green { color: var(--green); font-weight: 600; }
+    .td-red { color: var(--red); }
+    .td-muted { color: var(--muted); font-size: 12px; }
+    .td-right { text-align: right; }
+    .td-total { background: rgba(201,168,76,0.06); font-weight: 600; }
+    .td-total td { color: #fff; border-top: 1px solid rgba(201,168,76,0.2); }
+
+    /* TWO COL */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+    /* STAT ROWS */
+    .stat-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-key { color: var(--muted); font-size: 12px; }
+    .stat-val { color: var(--text); font-weight: 600; font-size: 13px; }
+    .stat-val.gold { color: var(--gold); }
+
+    /* PILL BADGE */
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 2px 10px; border-radius: 20px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
+    }
+    .badge-green { background: rgba(76,175,125,0.15); color: var(--green); }
+    .badge-gold { background: var(--gold-dim); color: var(--gold); }
+    .badge-red { background: rgba(224,92,92,0.15); color: var(--red); }
+    .badge-blue { background: rgba(91,156,246,0.15); color: var(--blue); }
+
+    /* CMHC POINTS */
+    .points-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+    .point-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      padding: 20px; text-align: center;
+    }
+    .point-circle {
+      width: 60px; height: 60px; border-radius: 50%;
+      border: 2px solid var(--gold); display: flex; align-items: center;
+      justify-content: center; margin: 0 auto 12px;
+      font-size: 20px; font-weight: 700; color: var(--gold);
+      background: var(--gold-dim);
+    }
+    .point-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+    .point-desc { font-size: 11px; color: var(--muted); }
+
+    /* COMPARISON */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .compare-card {
+      border-radius: 12px; padding: 24px;
+      border: 2px solid var(--border);
+    }
+    .compare-card.preferred {
+      border-color: rgba(201,168,76,0.4);
+      background: rgba(201,168,76,0.04);
+    }
+    .compare-card .c-title {
+      font-size: 12px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 20px;
+    }
+    .compare-card.preferred .c-title { color: var(--gold); }
+    .compare-card:not(.preferred) .c-title { color: var(--muted); }
+
+    /* ADVANTAGES / RISKS */
+    .adv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .adv-list { list-style: none; }
+    .adv-list li {
+      display: flex; gap: 12px; padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .adv-list li:last-child { border-bottom: none; }
+    .adv-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .adv-content .adv-title { font-weight: 600; color: #fff; font-size: 13px; margin-bottom: 2px; }
+    .adv-content .adv-desc { color: var(--muted); font-size: 12px; line-height: 1.5; }
+
+    /* STEPS */
+    .steps-list { list-style: none; }
+    .steps-list li {
+      display: flex; gap: 16px; padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold); font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-content .step-title { font-weight: 600; color: #fff; margin-bottom: 2px; }
+    .step-content .step-desc { color: var(--muted); font-size: 12px; }
+
+    /* CHART CONTAINER */
+    .chart-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px;
+    }
+    .chart-box canvas { max-height: 280px; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    /* BUMP TABLE */
+    .bump-highlight { background: rgba(201,168,76,0.06); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 16px; }
+      .nav-links { display: none; }
+      section { padding: 40px 16px; }
+      .hero { padding: 40px 16px 32px; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .two-col, .three-col, .adv-grid, .compare-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">2759 KINGSTON RD — ASSESSMENT</div>
+  <div class="nav-links">
+    <a href="#overview">Overview</a>
+    <a href="#costs">Costs</a>
+    <a href="#cmhc">CMHC</a>
+    <a href="#jv">JV / Land Bump</a>
+    <a href="#returns">Returns</a>
+    <a href="#risks">Risks</a>
+    <a href="#steps">Next Steps</a>
+  </div>
+  <span class="nav-badge">CMHC MLI SELECT</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="overview">
+  <div style="max-width:1200px; margin:0 auto;">
+    <div class="hero-label">Mixed-Use Development Assessment &nbsp;·&nbsp; Scarborough, ON &nbsp;·&nbsp; February 20, 2026</div>
+    <h1>2759–2763 Kingston Rd.<br>&amp; 52 St. Quentin Ave.</h1>
+    <p class="hero-sub">
+      95-unit purpose-built rental &nbsp;·&nbsp; 10 storeys &nbsp;·&nbsp; 433 sm ground-floor retail &nbsp;·&nbsp;
+      <span>CMHC MLI Select — 50-Year Amortization</span>
+    </p>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Total Units</div>
+        <div class="kpi-value">95</div>
+        <div class="kpi-note">69×1BR · 14×2BR · 12×3BR</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Total Dev. Cost</div>
+        <div class="kpi-value">$36.3M</div>
+        <div class="kpi-note">$382K per door all-in</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Stabilized NOI</div>
+        <div class="kpi-value">$1.62M</div>
+        <div class="kpi-note">Year 1 · 4.46% cap on cost</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">CMHC Mortgage</div>
+        <div class="kpi-value">$32.3M</div>
+        <div class="kpi-note">~90% LTV · 3.65% · 50-yr amort</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">DSCR</div>
+        <div class="kpi-value">1.10x</div>
+        <div class="kpi-note">Min threshold met</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Developer Cash (JV)</div>
+        <div class="kpi-value">$700K</div>
+        <div class="kpi-note">Seller contributes land as equity</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Land Bump Equity</div>
+        <div class="kpi-value">$1.7M</div>
+        <div class="kpi-note">Net cash if $8.5M entitled value</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Amortization</div>
+        <div class="kpi-value">50 yr</div>
+        <div class="kpi-note">MLI Select 100 points</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EXECUTIVE SUMMARY -->
+<section>
+  <div class="section-label">Executive Summary</div>
+  <div class="section-title">The Opportunity</div>
+  <div class="section-desc">
+    2759–2763 Kingston Road presents a purpose-built rental development in Scarborough's Cliffside neighbourhood on a 15,617 sf site. The proposed 10-storey mixed-use building accommodates 95 residential units plus 433 sm of ground-floor retail. The project has advanced through OPA/ZBA resubmission (June 2025), with Baron Nelson Architects and MA Developments leading design and project management.
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title"><span class="icon">🏗</span> Project Details</div>
+      <div class="stat-row"><span class="stat-key">Address</span><span class="stat-val">2759–2763 Kingston Rd. &amp; 52 St. Quentin Ave.</span></div>
+      <div class="stat-row"><span class="stat-key">Municipality</span><span class="stat-val">Scarborough, Toronto</span></div>
+      <div class="stat-row"><span class="stat-key">Site Area</span><span class="stat-val">1,451 sm (15,617 sf)</span></div>
+      <div class="stat-row"><span class="stat-key">Total GFA (Above Grade)</span><span class="stat-val">6,841 sm (73,642 sf)</span></div>
+      <div class="stat-row"><span class="stat-key">Retail GFA</span><span class="stat-val">433 sm (4,661 sf)</span></div>
+      <div class="stat-row"><span class="stat-key">Total GCA (incl. Parking)</span><span class="stat-val">10,403 sm (111,992 sf)</span></div>
+      <div class="stat-row"><span class="stat-key">Storeys</span><span class="stat-val">10 + Mech. Penthouse</span></div>
+      <div class="stat-row"><span class="stat-key">Building Height</span><span class="stat-val">30.23m (roof) / 36.83m (peak)</span></div>
+      <div class="stat-row"><span class="stat-key">FSI</span><span class="stat-val">4.72</span></div>
+      <div class="stat-row"><span class="stat-key">Parking</span><span class="stat-val">48 stalls (P1 &amp; P2 underground)</span></div>
+      <div class="stat-row"><span class="stat-key">Amenity Space</span><span class="stat-val">380 sm (190 indoor + 190 outdoor)</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🤝</span> Seller Position &amp; Deal Structure</div>
+      <div class="stat-row"><span class="stat-key">Believed Land Value</span><span class="stat-val">$5,500,000</span></div>
+      <div class="stat-row"><span class="stat-key">Debt — Kingston Rd.</span><span class="stat-val">$1,500,000</span></div>
+      <div class="stat-row"><span class="stat-key">Debt — St. Quentin Ave.</span><span class="stat-val">$1,000,000</span></div>
+      <div class="stat-row"><span class="stat-key">Total Existing Debt</span><span class="stat-val">$2,500,000</span></div>
+      <div class="stat-row"><span class="stat-key">Seller Break-Even (Net)</span><span class="stat-val gold">$4,000,000</span></div>
+      <div class="stat-row"><span class="stat-key">Implied Purchase Price</span><span class="stat-val gold">$6,500,000</span></div>
+      <div class="stat-row"><span class="stat-key">Delta vs. Land Value</span><span class="stat-val td-red">+$1,000,000 premium</span></div>
+      <div class="stat-row"><span class="stat-key">JV Willingness</span><span class="stat-val"><span class="badge badge-green">YES — Ready to JV</span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- UNIT MIX & REVENUE -->
+<section>
+  <div class="section-label">Unit Mix &amp; Revenue</div>
+  <div class="section-title">Rental Income Projections</div>
+  <p class="section-desc">
+    CMHC blended rent assumes 70% of units at market rate and 30% at 10% below median (MLI Select affordability commitment). Market rents based on new construction purpose-built rental in Scarborough, Q1 2026.
+  </p>
+
+  <div style="margin-bottom: 20px;">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Unit Type</th>
+            <th>Count</th>
+            <th>% of Total</th>
+            <th>Est. Size</th>
+            <th>Market Rent</th>
+            <th>CMHC Blended Rent</th>
+            <th class="td-right">Annual Revenue</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1 Bedroom</td>
+            <td>69</td>
+            <td>72.6%</td>
+            <td>~550 sf</td>
+            <td>$2,200/mo</td>
+            <td>$2,134/mo</td>
+            <td class="td-right td-gold">$1,766,952</td>
+          </tr>
+          <tr>
+            <td>2 Bedroom</td>
+            <td>14</td>
+            <td>14.7%</td>
+            <td>~750 sf</td>
+            <td>$2,650/mo</td>
+            <td>$2,571/mo</td>
+            <td class="td-right td-gold">$431,844</td>
+          </tr>
+          <tr>
+            <td>3 Bedroom</td>
+            <td>12</td>
+            <td>12.6%</td>
+            <td>~950 sf</td>
+            <td>$3,000/mo</td>
+            <td>$2,910/mo</td>
+            <td class="td-right td-gold">$419,040</td>
+          </tr>
+          <tr>
+            <td><em>Retail (4,661 sf @ $22/sf NNN)</em></td>
+            <td colspan="5"><em style="color:var(--muted)">—</em></td>
+            <td class="td-right td-gold">$102,542</td>
+          </tr>
+          <tr class="td-total">
+            <td colspan="6"><strong>Gross Potential Revenue</strong></td>
+            <td class="td-right"><strong>$2,720,378</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="chart-box">
+      <div style="font-size:12px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;">Unit Mix</div>
+      <canvas id="unitMixChart"></canvas>
+    </div>
+    <div class="chart-box">
+      <div style="font-size:12px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;">Revenue Breakdown</div>
+      <canvas id="revenueChart"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- DEVELOPMENT COST -->
+<section id="costs">
+  <div class="section-label">Development Cost Analysis</div>
+  <div class="section-title">$215/sf Hard Construction — $36.3M All-In</div>
+  <p class="section-desc">At hard construction cost of $215/sf on 111,992 sf GCA. Soft costs at 18%, contingency at 5%.</p>
+
+  <div class="two-col">
+    <div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Cost Category</th><th>Calculation</th><th class="td-right">Amount</th><th class="td-right">Per Door</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Hard Construction</td><td class="td-muted">111,992 sf × $215</td><td class="td-right td-gold">$24,078,280</td><td class="td-right td-muted">$253,456</td></tr>
+            <tr><td>Soft Costs (18%)</td><td class="td-muted">18% of hard</td><td class="td-right">$4,334,090</td><td class="td-right td-muted">$45,622</td></tr>
+            <tr><td>Contingency (5%)</td><td class="td-muted">5% of hard + soft</td><td class="td-right">$1,420,619</td><td class="td-right td-muted">$14,954</td></tr>
+            <tr class="td-total"><td><strong>Total Construction</strong></td><td class="td-muted">excl. land</td><td class="td-right"><strong>$29,832,989</strong></td><td class="td-right td-muted">$314,031</td></tr>
+            <tr><td>Land (Break-Even)</td><td class="td-muted">incl. debt discharge</td><td class="td-right">$6,500,000</td><td class="td-right td-muted">$68,421</td></tr>
+            <tr class="td-total"><td><strong>Total Project Cost</strong></td><td></td><td class="td-right td-gold"><strong>$36,332,989</strong></td><td class="td-right td-muted">$382,453</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-title"><span class="icon">📊</span> Stabilized Pro Forma (Year 1)</div>
+        <div class="stat-row"><span class="stat-key">Gross Potential Revenue</span><span class="stat-val">$2,720,378</span></div>
+        <div class="stat-row"><span class="stat-key">Less: Vacancy &amp; Credit (4.0%)</span><span class="stat-val td-red">($108,815)</span></div>
+        <div class="stat-row"><span class="stat-key">Effective Gross Income</span><span class="stat-val">$2,611,563</span></div>
+        <div class="stat-row"><span class="stat-key">Operating Expenses (38%)</span><span class="stat-val td-red">($992,394)</span></div>
+        <div class="stat-row"><span class="stat-key">Property Tax (12%)</span><span class="stat-val td-red">($313,388)</span></div>
+        <div class="stat-row"><span class="stat-key" style="font-weight:600;color:#fff;">Net Operating Income</span><span class="stat-val gold" style="font-size:16px;">$1,619,169</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📈</span> Scarborough Rental Market (Q1 2026)</div>
+        <div class="stat-row"><span class="stat-key">1BR Avg</span><span class="stat-val">$1,550–$2,650</span></div>
+        <div class="stat-row"><span class="stat-key">2BR Avg</span><span class="stat-val">$1,550–$2,795</span></div>
+        <div class="stat-row"><span class="stat-key">Avg Rent PSF</span><span class="stat-val">$2.81/sf</span></div>
+        <div class="stat-row"><span class="stat-key">Vacancy Rate (Toronto)</span><span class="stat-val">4.2%</span></div>
+        <div class="stat-row"><span class="stat-key">YoY Rent Change</span><span class="stat-val td-red">-5% to -12%</span></div>
+        <div class="stat-row"><span class="stat-key">2025/26 Guideline Increase</span><span class="stat-val">2.5%</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CMHC -->
+<section id="cmhc">
+  <div class="section-label">CMHC MLI Select</div>
+  <div class="section-title">100-Point Qualification — 50-Year Amortization</div>
+  <p class="section-desc">MLI Select requires 100 points for 50-year amortization. This project qualifies through energy efficiency, affordability, and accessibility commitments.</p>
+
+  <div class="points-grid" style="margin-bottom:32px;">
+    <div class="point-card">
+      <div class="point-circle">50</div>
+      <div class="point-title">Energy Efficiency</div>
+      <div class="point-desc">Net-Zero Energy Ready · 25%+ energy reduction · Highest point return</div>
+    </div>
+    <div class="point-card">
+      <div class="point-circle">30</div>
+      <div class="point-title">Affordability</div>
+      <div class="point-desc">20-year term · 30% of units (≈29 units) at 10% below median rent</div>
+    </div>
+    <div class="point-card">
+      <div class="point-circle">20</div>
+      <div class="point-title">Accessibility</div>
+      <div class="point-desc">20%+ barrier-free units (≈19 units) · CSA B651 compliant</div>
+    </div>
+    <div class="point-card" style="background:var(--gold-dim);border-color:rgba(201,168,76,0.3);">
+      <div class="point-circle" style="font-size:16px;">✓</div>
+      <div class="point-title" style="color:var(--gold);">100 Points</div>
+      <div class="point-desc">Qualifies for maximum 50-year amortization + ~90% LTV</div>
+    </div>
+  </div>
+
+  <div class="table-wrap" style="margin-bottom:32px;">
+    <table>
+      <thead>
+        <tr><th>Financing Parameter</th><th>Value</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Stabilized NOI</td><td class="td-gold">$1,619,169</td><td class="td-muted">Year 1 stabilized</td></tr>
+        <tr><td>Capitalization Rate</td><td>4.50%</td><td class="td-muted">Income approach valuation</td></tr>
+        <tr><td>Appraised Value</td><td class="td-gold">$35,981,533</td><td class="td-muted">NOI / cap rate</td></tr>
+        <tr><td>LTV</td><td>~90%</td><td class="td-muted">DSCR-constrained</td></tr>
+        <tr><td>Interest Rate</td><td>3.65%</td><td class="td-muted">Estimated insured rate</td></tr>
+        <tr><td>Amortization</td><td class="td-gold">50 years</td><td class="td-muted">MLI Select maximum</td></tr>
+        <tr><td>CMHC Insured Mortgage</td><td class="td-gold">$32,281,463</td><td class="td-muted">DSCR-constrained at 1.10x</td></tr>
+        <tr><td>Annual Debt Service</td><td>$1,471,972</td><td class="td-muted">50-yr at 3.65%</td></tr>
+        <tr><td>DSCR</td><td class="td-gold">1.10x</td><td class="td-muted">Minimum threshold</td></tr>
+        <tr><td>Insurance Premium</td><td>$1,526,913</td><td class="td-muted">4.73% (post-July 2025 pricing)</td></tr>
+        <tr><td>Equity Required</td><td>$3,700,070</td><td class="td-muted">Without JV/land bump</td></tr>
+        <tr><td>Year 1 Cash Flow</td><td class="td-green">$147,197</td><td class="td-muted">NOI minus debt service</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="compare-grid">
+    <div class="compare-card preferred">
+      <div class="c-title">⚡ CMHC MLI Select (50yr) — Preferred</div>
+      <div class="stat-row"><span class="stat-key">LTV</span><span class="stat-val gold">~90%</span></div>
+      <div class="stat-row"><span class="stat-key">Amortization</span><span class="stat-val gold">50 years</span></div>
+      <div class="stat-row"><span class="stat-key">Interest Rate</span><span class="stat-val gold">~3.65%</span></div>
+      <div class="stat-row"><span class="stat-key">Total Mortgage</span><span class="stat-val">$33,808,377</span></div>
+      <div class="stat-row"><span class="stat-key">Annual Debt Service</span><span class="stat-val">$1,471,972</span></div>
+      <div class="stat-row"><span class="stat-key">DSCR</span><span class="stat-val gold">1.10x ✓</span></div>
+      <div class="stat-row"><span class="stat-key">Equity Required</span><span class="stat-val">$3,700,070</span></div>
+      <div class="stat-row"><span class="stat-key">Year 1 Cash Flow</span><span class="stat-val td-green">+$147,197</span></div>
+    </div>
+    <div class="compare-card">
+      <div class="c-title">Conventional (25yr)</div>
+      <div class="stat-row"><span class="stat-key">LTV</span><span class="stat-val">65–75%</span></div>
+      <div class="stat-row"><span class="stat-key">Amortization</span><span class="stat-val">25–30 years</span></div>
+      <div class="stat-row"><span class="stat-key">Interest Rate</span><span class="stat-val">~5.00–5.50%</span></div>
+      <div class="stat-row"><span class="stat-key">Total Mortgage</span><span class="stat-val">~$25,186,000</span></div>
+      <div class="stat-row"><span class="stat-key">Annual Debt Service</span><span class="stat-val">~$1,764,000</span></div>
+      <div class="stat-row"><span class="stat-key">DSCR</span><span class="stat-val td-red">~0.92x ✗ Fails</span></div>
+      <div class="stat-row"><span class="stat-key">Equity Required</span><span class="stat-val td-red">~$10,795,000</span></div>
+      <div class="stat-row"><span class="stat-key">Year 1 Cash Flow</span><span class="stat-val td-red">($144,831)</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- JV / LAND BUMP -->
+<section id="jv">
+  <div class="section-label">Capital Structure</div>
+  <div class="section-title">JV Structure &amp; Land Bump Strategy</div>
+  <p class="section-desc">
+    Two strategies to dramatically reduce developer cash outlay. The JV structure leverages the seller's land-as-equity contribution. The land bump strategy captures CMHC's higher entitled land appraisal to create paper equity at closing.
+  </p>
+
+  <div class="three-col" style="margin-bottom:32px;">
+    <div class="card" style="border-color:rgba(201,168,76,0.3); background:rgba(201,168,76,0.04);">
+      <div class="card-title">💼 Straight Purchase</div>
+      <div class="stat-row"><span class="stat-key">Land Cost</span><span class="stat-val">$6,500,000</span></div>
+      <div class="stat-row"><span class="stat-key">CMHC Mortgage</span><span class="stat-val">$32,281,463</span></div>
+      <div class="stat-row"><span class="stat-key">Equity Gap</span><span class="stat-val">$3,700,070</span></div>
+      <div class="stat-row"><span class="stat-key">Developer Cash</span><span class="stat-val gold" style="font-size:16px;">$3.7M</span></div>
+    </div>
+    <div class="card" style="border-color:rgba(76,175,125,0.3); background:rgba(76,175,125,0.04);">
+      <div class="card-title">🤝 JV Structure</div>
+      <div class="stat-row"><span class="stat-key">Seller Land Equity</span><span class="stat-val">$3,000,000</span></div>
+      <div class="stat-row"><span class="stat-key">Seller Cash (debt)</span><span class="stat-val">$2,500,000</span></div>
+      <div class="stat-row"><span class="stat-key">Seller Total (81.1%)</span><span class="stat-val">$5,500,000</span></div>
+      <div class="stat-row"><span class="stat-key">Developer Cash (18.9%)</span><span class="stat-val td-green" style="font-size:16px;">$700K</span></div>
+    </div>
+    <div class="card" style="border-color:rgba(91,156,246,0.3); background:rgba(91,156,246,0.04);">
+      <div class="card-title">📈 Land Bump on Permits</div>
+      <div class="stat-row"><span class="stat-key">Lock Purchase at</span><span class="stat-val">$6,500,000</span></div>
+      <div class="stat-row"><span class="stat-key">CMHC Appraisal (entitled)</span><span class="stat-val">$8,500,000</span></div>
+      <div class="stat-row"><span class="stat-key">Paper Equity Created</span><span class="stat-val td-blue">$2,000,000</span></div>
+      <div class="stat-row"><span class="stat-key">Net Cash Equity</span><span class="stat-val td-blue" style="font-size:16px;">$1.7M</span></div>
+    </div>
+  </div>
+
+  <div class="section-title" style="font-size:16px; margin-bottom:16px;">Land Bump Sensitivity — Entitled Value Scenarios</div>
+  <div class="table-wrap" style="margin-bottom:32px;">
+    <table>
+      <thead>
+        <tr><th>Entitled Land Value</th><th>Land Bump</th><th>Net Cash Equity</th><th>Vs. Base Purchase</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>$7,500,000</td><td>$1,000,000</td><td>$2,700,070</td><td class="td-muted">-$1.0M</td></tr>
+        <tr><td>$8,000,000</td><td>$1,500,000</td><td>$2,200,070</td><td class="td-muted">-$1.5M</td></tr>
+        <tr class="bump-highlight"><td><strong>$8,500,000 (Base Case)</strong></td><td class="td-gold">$2,000,000</td><td class="td-gold"><strong>$1,700,070</strong></td><td class="td-green">-$2.0M (-54%)</td></tr>
+        <tr><td>$9,000,000</td><td>$2,500,000</td><td>$1,200,070</td><td class="td-green">-$2.5M</td></tr>
+        <tr><td>$9,500,000</td><td>$3,000,000</td><td class="td-green">$700,070</td><td class="td-green">-$3.0M (matches JV)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-title" style="font-size:16px; margin-bottom:16px;">CMHC Financing — With vs. Without Land Bump</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Parameter</th><th>Without Bump</th><th>With Permit Bump ($8.5M)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Land Value for Appraisal</td><td>$5,500,000</td><td class="td-gold">$8,500,000</td></tr>
+        <tr><td>Total Dev Cost (with Land)</td><td>$35,332,989</td><td>$38,332,989</td></tr>
+        <tr><td>Stabilized NOI</td><td>$1,619,169</td><td>$1,619,169</td></tr>
+        <tr><td>Appraised Value (NOI / Cap)</td><td>$35,981,533</td><td>$35,981,533</td></tr>
+        <tr><td>CMHC Mortgage (DSCR-constrained)</td><td>$32,281,463</td><td>$32,281,463</td></tr>
+        <tr><td>Actual Cash Paid for Land</td><td>$6,500,000</td><td>$6,500,000</td></tr>
+        <tr><td>Equity Required</td><td>$3,700,070</td><td>$3,700,070</td></tr>
+        <tr><td>Paper Equity (Land Bump)</td><td class="td-muted">—</td><td class="td-gold">$2,000,000</td></tr>
+        <tr class="td-total"><td><strong>Net Cash Equity Needed</strong></td><td><strong>$3,700,070</strong></td><td class="td-green"><strong>$1,700,070</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- RETURNS -->
+<section id="returns">
+  <div class="section-label">Return Analysis</div>
+  <div class="section-title">Projected Returns — 2.5% Annual Rent Growth</div>
+
+  <div class="three-col" style="margin-bottom:32px;">
+    <div class="card">
+      <div class="card-title">📅 Year 1</div>
+      <div class="stat-row"><span class="stat-key">Cap Rate on Total Cost</span><span class="stat-val">4.46%</span></div>
+      <div class="stat-row"><span class="stat-key">Cap Rate on Value</span><span class="stat-val">4.50%</span></div>
+      <div class="stat-row"><span class="stat-key">Annual Cash Flow (after DS)</span><span class="stat-val td-green">$147,197</span></div>
+      <div class="stat-row"><span class="stat-key">Cash-on-Cash Return</span><span class="stat-val">3.98%</span></div>
+      <div class="stat-row"><span class="stat-key">NOI Per Unit</span><span class="stat-val">$17,044</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📅 Year 3</div>
+      <div class="stat-row"><span class="stat-key">NOI</span><span class="stat-val td-green">$1,743,668</span></div>
+      <div class="stat-row"><span class="stat-key">Cash Flow</span><span class="stat-val td-green">$271,696</span></div>
+      <div class="stat-row"><span class="stat-key">Cash-on-Cash</span><span class="stat-val td-green">7.34%</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📅 Year 5</div>
+      <div class="stat-row"><span class="stat-key">NOI</span><span class="stat-val td-green">$1,831,941</span></div>
+      <div class="stat-row"><span class="stat-key">Cash Flow</span><span class="stat-val td-green">$359,969</span></div>
+      <div class="stat-row"><span class="stat-key">Cash-on-Cash</span><span class="stat-val td-green">9.73%</span></div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="chart-box">
+      <div style="font-size:12px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;">Cash-on-Cash Return Over Time</div>
+      <canvas id="returnChart"></canvas>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">⚠️ Sensitivity Analysis</div>
+        <div class="stat-row"><span class="stat-key">Break-Even Occupancy</span><span class="stat-val">87.3%</span></div>
+        <div class="stat-row"><span class="stat-key">NOI if Rents -5%</span><span class="stat-val td-red">$1,538,211</span></div>
+        <div class="stat-row"><span class="stat-key">DSCR if Rents -5%</span><span class="stat-val">1.05x</span></div>
+        <div class="stat-row"><span class="stat-key">NOI if Rents -10%</span><span class="stat-val td-red">$1,457,252</span></div>
+        <div class="stat-row"><span class="stat-key">DSCR if Rents -10%</span><span class="stat-val td-red">0.99x ✗</span></div>
+        <div class="stat-row"><span class="stat-key">NOI if OpEx @ 42%</span><span class="stat-val">$1,514,706</span></div>
+        <div class="stat-row"><span class="stat-key">DSCR if OpEx @ 42%</span><span class="stat-val">1.03x</span></div>
+        <div class="stat-row"><span class="stat-key">DSCR if Rate +50bps (4.15%)</span><span class="stat-val">1.01x</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADVANTAGES & RISKS -->
+<section id="risks">
+  <div class="section-label">Deal Assessment</div>
+  <div class="section-title">Advantages &amp; Risks</div>
+
+  <div class="adv-grid">
+    <div>
+      <div style="font-size:12px;font-weight:700;color:var(--green);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;">✅ Key Advantages</div>
+      <ul class="adv-list">
+        <li>
+          <span class="adv-icon">🔥</span>
+          <div class="adv-content">
+            <div class="adv-title">Motivated Seller / JV-Ready</div>
+            <div class="adv-desc">Seller is desperate at $4M break-even with $2.5M in existing debt. Willingness to JV reduces developer cash to ~$700K for a 95-unit project.</div>
+          </div>
+        </li>
+        <li>
+          <span class="adv-icon">📈</span>
+          <div class="adv-content">
+            <div class="adv-title">Land Bump Equity Play</div>
+            <div class="adv-desc">Locking $6.5M purchase now and capturing CMHC appraisal at entitled value creates $2.0M+ in paper equity at closing — reducing net cash equity by ~54%.</div>
+          </div>
+        </li>
+        <li>
+          <span class="adv-icon">💰</span>
+          <div class="adv-content">
+            <div class="adv-title">Minimal Cash Equity</div>
+            <div class="adv-desc">JV: developer contributes only $700K (18.9%). Land bump: net cash equity ~$1.7M. Extraordinary capital efficiency for a 95-unit build.</div>
+          </div>
+        </li>
+        <li>
+          <span class="adv-icon">⏳</span>
+          <div class="adv-content">
+            <div class="adv-title">50-Year Amortization Benefit</div>
+            <div class="adv-desc">Extended amortization reduces annual debt service by ~$292K vs. 25-year conventional — creating positive Year 1 cash flow vs. ($144K) negative without it.</div>
+          </div>
+        </li>
+        <li>
+          <span class="adv-icon">🏙</span>
+          <div class="adv-content">
+            <div class="adv-title">Kingston Road Corridor Momentum</div>
+            <div class="adv-desc">3,800+ units in active development, City-approved Complete Streets (Dec 2025), and the Kingston Road Revitalization Study support long-term appreciation.</div>
+          </div>
+        </li>
+        <li>
+          <span class="adv-icon">✅</span>
+          <div class="adv-content">
+            <div class="adv-title">Zoning Advancement</div>
+            <div class="adv-desc">OPA/ZBA resubmission #2 filed June 2025. Approved at 4.72 FSI with 10 storeys. Significantly de-risks the entitlement timeline.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <div style="font-size:12px;font-weight:700;color:var(--red);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;">⚠️ Risks &amp; Considerations</div>
+      <ul class="adv-list">
+        <li>
+          <span class="adv-icon">📉</span>
+          <div class="adv-content">
+            <div class="adv-title">Negative Value Spread at $6.5M Land</div>
+            <div class="adv-desc">Total project cost ($36.33M) slightly exceeds appraised value ($35.98M) by ~$351K. Deal only creates value if land acquired below $6.15M or rents improve.</div>
+          </div>
+        </li>
+        <li>
+          <span class="adv-icon">🎯</span>
+          <div class="adv-content">
+            <div class="adv-title">Tight DSCR at 1.10x</div>
+            <div class="adv-desc">A 5% rent decline compresses DSCR to 1.05x; a 10% decline breaks it below 1.0x. Very limited downside cushion given current market softening.</div>
+          </div>
+        </li>
+        <li>
+          <span class="adv-icon">💸</span>
+          <div class="adv-content">
+            <div class="adv-title">Purchase Premium</div>
+            <div class="adv-desc">The $6.5M break-even price is $1.0M above the seller's own $5.5M valuation. Negotiating closer to $5.5M would significantly improve returns.</div>
+          </div>
+        </li>
+        <li>
+          <span class="adv-icon">📋</span>
+          <div class="adv-content">
+            <div class="adv-title">CMHC Premium Increase (July 2025)</div>
+            <div class="adv-desc">The 4.73% net premium adds ~$1.53M to the mortgage — ~103% higher than pre-July 2025 pricing. Meaningful impact on project economics.</div>
+          </div>
+        </li>
+        <li>
+          <span class="adv-icon">🏘</span>
+          <div class="adv-content">
+            <div class="adv-title">Market Softening</div>
+            <div class="adv-desc">Toronto rents declined 5–12% YoY for 1BR units. Vacancy at 4.2% (highest since 2020). New supply on Kingston Rd. adds competitive pressure.</div>
+          </div>
+        </li>
+        <li>
+          <span class="adv-icon">🔨</span>
+          <div class="adv-content">
+            <div class="adv-title">Construction Cost Risk</div>
+            <div class="adv-desc">The $215/sf assumption needs validation via QS tender pricing for a concrete 10-storey with 2 levels of underground parking in GTA.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT STEPS -->
+<section id="steps">
+  <div class="section-label">Recommended Actions</div>
+  <div class="section-title">Next Steps</div>
+
+  <ul class="steps-list">
+    <li>
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">Negotiate Land Price</div>
+        <div class="step-desc">Target $5.5M or below to create positive value spread on completion. At $5.5M (seller's own valuation), the project creates ~$649K in value vs. a negative spread at $6.5M.</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Structure JV Term Sheet</div>
+        <div class="step-desc">Draft heads of terms including: equity split, cash flow waterfall, promote structure, decision rights, exit mechanisms, and treatment of existing $2.5M debt.</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">Validate Construction Costs</div>
+        <div class="step-desc">Obtain Class C or Class B estimate from a quantity surveyor to confirm $215/sf for concrete mid-rise in GTA.</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">CMHC Pre-Consultation</div>
+        <div class="step-desc">Engage CMHC-approved lender to confirm MLI Select 100-point eligibility and obtain current premium/rate quotes.</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <div class="step-title">Commission Energy Model</div>
+        <div class="step-desc">Confirm building can achieve Net-Zero Energy Ready status for 50 energy efficiency points — the largest single point allocation.</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <div class="step-title">Appraisal for Entitled Land Value</div>
+        <div class="step-desc">Obtain preliminary appraisal opinion on post-entitlement land value to validate the $8.5M land bump assumption before committing capital.</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">7</div>
+      <div class="step-content">
+        <div class="step-title">Track Zoning Approval</div>
+        <div class="step-desc">Monitor OPA/ZBA progress following June 2025 resubmission. Confirm timeline to approval and site plan control application.</div>
+      </div>
+    </li>
+    <li>
+      <div class="step-num">8</div>
+      <div class="step-content">
+        <div class="step-title">Engage Construction Lender</div>
+        <div class="step-desc">Begin discussions on progress draw financing through the development period in parallel with CMHC mortgage structuring.</div>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<footer>
+  <div style="margin-bottom:8px; color: var(--gold); font-weight:600; letter-spacing:1px;">
+    2759–2763 Kingston Rd. &amp; 52 St. Quentin Ave., Scarborough, ON
+  </div>
+  <div>Property Assessment — For Discussion Purposes Only &nbsp;·&nbsp; Generated February 20, 2026</div>
+  <div style="margin-top:8px;">This assessment is based on estimated market data and assumptions. All projections should be verified with professional advisors before making investment decisions.</div>
+</footer>
+
+<script>
+  // Unit Mix Donut
+  new Chart(document.getElementById('unitMixChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['1 Bedroom (69)', '2 Bedroom (14)', '3 Bedroom (12)'],
+      datasets: [{
+        data: [69, 14, 12],
+        backgroundColor: ['#C9A84C', '#5B9CF6', '#4CAF7D'],
+        borderColor: '#1A2030',
+        borderWidth: 3,
+        hoverOffset: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { color: '#7B8299', font: { size: 11 }, padding: 16 } }
+      },
+      cutout: '65%',
+    }
+  });
+
+  // Revenue Bar
+  new Chart(document.getElementById('revenueChart'), {
+    type: 'bar',
+    data: {
+      labels: ['1BR Revenue', '2BR Revenue', '3BR Revenue', 'Retail'],
+      datasets: [{
+        label: 'Annual Revenue',
+        data: [1766952, 431844, 419040, 102542],
+        backgroundColor: ['#C9A84C', '#5B9CF6', '#4CAF7D', '#E2C97E'],
+        borderRadius: 6,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => '$' + ctx.parsed.y.toLocaleString()
+          }
+        }
+      },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#7B8299', font: { size: 11 } } },
+        y: {
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: { color: '#7B8299', font: { size: 11 }, callback: v => '$' + (v/1000) + 'K' }
+        }
+      }
+    }
+  });
+
+  // Cash-on-Cash over time
+  new Chart(document.getElementById('returnChart'), {
+    type: 'line',
+    data: {
+      labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+      datasets: [{
+        label: 'Cash-on-Cash Return',
+        data: [3.98, 5.65, 7.34, 8.54, 9.73],
+        borderColor: '#C9A84C',
+        backgroundColor: 'rgba(201,168,76,0.08)',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#C9A84C',
+        pointRadius: 5,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ctx.parsed.y + '%' } }
+      },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#7B8299' } },
+        y: {
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: { color: '#7B8299', callback: v => v + '%' },
+          suggestedMin: 0, suggestedMax: 12
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>
