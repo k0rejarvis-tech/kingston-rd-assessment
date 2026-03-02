@@ -1,0 +1,2397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K0RE Platform — Wireframes v2</title>
+<style>
+  /* ===== DESIGN SYSTEM ===== */
+  :root {
+    --bg: #050505;
+    --card: #1C1C1E;
+    --card2: #242426;
+    --gold: #D4AF37;
+    --gold-dim: rgba(212,175,55,0.15);
+    --white: #FFFFFF;
+    --secondary: #98989D;
+    --border: rgba(255,255,255,0.08);
+    --border-gold: rgba(212,175,55,0.4);
+    --success: #10B981;
+    --danger: #EF4444;
+    --purple: #8B5CF6;
+    --blue: #3B82F6;
+    --orange: #F59E0B;
+    --radius: 12px;
+    --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font);
+    font-size: 14px;
+    min-height: 100vh;
+  }
+
+  /* ===== TOP NAV ===== */
+  .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(5,5,5,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    height: 50px;
+  }
+  .top-nav::-webkit-scrollbar { display: none; }
+  .top-nav .brand {
+    color: var(--gold);
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 2px;
+    margin-right: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .nav-tab {
+    background: none;
+    border: none;
+    color: var(--secondary);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: all 0.15s;
+    font-family: var(--font);
+    letter-spacing: 0.3px;
+  }
+  .nav-tab:hover { color: var(--white); background: rgba(255,255,255,0.06); }
+  .nav-tab.active {
+    color: var(--gold);
+    background: var(--gold-dim);
+    font-weight: 600;
+  }
+
+  /* ===== SCREEN CONTAINERS ===== */
+  .screen { display: none; min-height: calc(100vh - 50px); }
+  .screen.active { display: block; }
+
+  /* ===== SHARED COMPONENTS ===== */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 20px;
+  }
+  .card-sm { padding: 14px 16px; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-family: var(--font);
+    transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn-gold { background: var(--gold); color: #000; }
+  .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--white); }
+  .btn-outline-gold { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
+  .btn-ghost { background: rgba(255,255,255,0.06); color: var(--white); }
+  .btn-sm { padding: 7px 14px; font-size: 12px; }
+  .btn-xs { padding: 5px 10px; font-size: 11px; border-radius: 6px; }
+  .btn-full { width: 100%; }
+  .btn-danger { background: var(--danger); color: var(--white); }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .badge-gold { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--border-gold); }
+  .badge-success { background: rgba(16,185,129,0.15); color: var(--success); }
+  .badge-danger { background: rgba(239,68,68,0.15); color: var(--danger); }
+  .badge-purple { background: rgba(139,92,246,0.15); color: var(--purple); }
+  .badge-blue { background: rgba(59,130,246,0.15); color: var(--blue); }
+  .badge-secondary { background: rgba(255,255,255,0.06); color: var(--secondary); }
+
+  .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  .dot-success { background: var(--success); }
+  .dot-gold { background: var(--gold); }
+  .dot-blue { background: var(--blue); }
+  .dot-purple { background: var(--purple); }
+  .dot-orange { background: var(--orange); }
+  .dot-secondary { background: var(--secondary); }
+
+  .label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--secondary); }
+  .gold-text { color: var(--gold); }
+  .secondary-text { color: var(--secondary); }
+  .success-text { color: var(--success); }
+  .danger-text { color: var(--danger); }
+
+  input[type="text"], input[type="email"], input[type="password"], textarea, select {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--white);
+    font-family: var(--font);
+    font-size: 14px;
+    padding: 11px 14px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  input:focus, textarea:focus { border-color: var(--gold); }
+  input::placeholder, textarea::placeholder { color: var(--secondary); }
+  textarea { resize: vertical; min-height: 100px; }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    background: rgba(255,255,255,0.1);
+    height: 4px;
+    border-radius: 2px;
+    width: 100%;
+    padding: 0;
+    border: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--gold);
+    cursor: pointer;
+  }
+
+  .divider {
+    display: flex; align-items: center; gap: 12px;
+    color: var(--secondary); font-size: 12px;
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  /* ===== SCORE RING ===== */
+  .score-ring-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .score-ring {
+    position: relative;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: conic-gradient(var(--gold) 0deg 259deg, rgba(255,255,255,0.06) 259deg 360deg);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .score-ring::before {
+    content: '';
+    position: absolute;
+    width: 112px; height: 112px;
+    border-radius: 50%;
+    background: var(--card);
+  }
+  .score-ring-inner { position: relative; z-index: 1; text-align: center; }
+  .score-ring-inner .score-num { font-size: 36px; font-weight: 800; color: var(--gold); line-height: 1; }
+  .score-ring-inner .score-label { font-size: 10px; color: var(--secondary); letter-spacing: 1px; }
+
+  .score-ring-sm {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: conic-gradient(var(--gold) 0deg 223deg, rgba(255,255,255,0.06) 223deg 360deg);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .score-ring-sm::before {
+    content: '';
+    position: absolute;
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--card);
+  }
+
+  .score-ring-onboard {
+    width: 180px; height: 180px;
+    background: conic-gradient(var(--gold) 0deg 223deg, rgba(255,255,255,0.06) 223deg 360deg);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .score-ring-onboard-inner {
+    width: 144px; height: 144px;
+    border-radius: 50%;
+    background: var(--bg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 2px; }
+
+  /* ===== SPARKLINE ===== */
+  .sparkline {
+    height: 48px;
+    background: linear-gradient(to bottom, rgba(212,175,55,0.15), transparent);
+    border-bottom: 1px solid var(--gold);
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .sparkline::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 48'%3E%3Cpolyline points='0,38 20,35 40,40 60,30 80,25 100,28 120,20 140,22 160,15 180,18 200,10' fill='none' stroke='%23D4AF37' stroke-width='2'/%3E%3C/svg%3E") no-repeat center/cover;
+  }
+
+  /* ===== PHONE FRAMES ===== */
+  .phone-frame {
+    width: 300px;
+    height: 600px;
+    background: #0a0a0a;
+    border-radius: 40px;
+    border: 8px solid #222;
+    box-shadow: 0 0 0 1px #333, 0 30px 80px rgba(0,0,0,0.8);
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .phone-notch {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100px; height: 28px;
+    background: #0a0a0a;
+    border-radius: 0 0 20px 20px;
+    z-index: 10;
+  }
+  .phone-content {
+    height: 100%;
+    overflow-y: auto;
+    padding-top: 40px;
+    scrollbar-width: none;
+  }
+  .phone-content::-webkit-scrollbar { display: none; }
+  .phone-bottom-tabs {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 56px;
+    background: rgba(10,10,10,0.97);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 8px 6px;
+  }
+  .phone-tab {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    font-size: 9px; color: var(--secondary); cursor: pointer;
+  }
+  .phone-tab.active { color: var(--gold); }
+  .phone-tab-icon { font-size: 18px; }
+
+  /* ===== ADMIN LAYOUT ===== */
+  .admin-layout { display: flex; height: calc(100vh - 50px); }
+  .admin-sidebar {
+    width: 220px;
+    background: #0d0d0f;
+    border-right: 1px solid var(--border);
+    padding: 20px 0;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+  .admin-sidebar-logo {
+    padding: 0 16px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .admin-sidebar-logo .k0re { color: var(--gold); font-weight: 800; font-size: 18px; letter-spacing: 2px; }
+  .admin-sidebar-logo .sub { color: var(--secondary); font-size: 10px; letter-spacing: 1px; }
+  .sidebar-section { padding: 0 8px; margin-bottom: 8px; }
+  .sidebar-section-label { color: var(--secondary); font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 8px 4px; }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    color: var(--secondary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .sidebar-item:hover { background: rgba(255,255,255,0.04); color: var(--white); }
+  .sidebar-item.active { background: var(--gold-dim); color: var(--gold); }
+  .admin-main { flex: 1; overflow-y: auto; padding: 24px; }
+
+  /* ===== CHAT ===== */
+  .chat-bubble {
+    max-width: 70%;
+    padding: 12px 16px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .chat-bubble.kj {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 4px;
+    align-self: flex-start;
+  }
+  .chat-bubble.user {
+    background: var(--gold);
+    color: #000;
+    border-bottom-right-radius: 4px;
+    align-self: flex-end;
+    margin-left: auto;
+  }
+
+  /* ===== MISC ===== */
+  .stat-item { text-align: center; }
+  .stat-item .stat-num { font-size: 24px; font-weight: 800; color: var(--white); }
+  .stat-item .stat-label { font-size: 10px; color: var(--secondary); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+  .tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    color: var(--secondary);
+    margin: 3px;
+  }
+  .tag-gold { background: var(--gold-dim); border-color: var(--border-gold); color: var(--gold); }
+
+  .float-btn {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 56px; height: 56px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    color: #000;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(212,175,55,0.4);
+    z-index: 50;
+  }
+
+  .bar-chart-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+  }
+  .bar-chart-label { font-size: 12px; color: var(--secondary); width: 140px; flex-shrink: 0; }
+  .bar-chart-track { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+  .bar-chart-fill { height: 100%; border-radius: 4px; background: var(--gold); }
+  .bar-chart-pct { font-size: 12px; font-weight: 600; color: var(--white); width: 36px; text-align: right; }
+
+  .table-row {
+    display: grid;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    font-size: 13px;
+  }
+  .table-row:last-child { border-bottom: none; }
+  .table-header { color: var(--secondary); font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+
+  /* Blurred preview for Network screen */
+  .blur-preview { filter: blur(3px); opacity: 0.5; pointer-events: none; }
+
+  /* Waveform animation */
+  .waveform { display: flex; align-items: center; gap: 3px; height: 40px; }
+  .wave-bar {
+    width: 3px;
+    border-radius: 2px;
+    background: var(--gold);
+    animation: wave 0.8s ease-in-out infinite alternate;
+  }
+  @keyframes wave {
+    from { height: 6px; }
+    to { height: 32px; }
+  }
+  .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+  .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+  .wave-bar:nth-child(4) { animation-delay: 0.3s; }
+  .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+  .wave-bar:nth-child(6) { animation-delay: 0.3s; }
+  .wave-bar:nth-child(7) { animation-delay: 0.2s; }
+  .wave-bar:nth-child(8) { animation-delay: 0.1s; }
+
+  /* Step indicators */
+  .step-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 32px; }
+  .step-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+  .step-dot.active { background: var(--gold); width: 24px; border-radius: 4px; }
+  .step-dot.done { background: var(--gold); opacity: 0.5; }
+</style>
+</head>
+<body>
+
+<!-- ===== TOP NAV ===== -->
+<nav class="top-nav">
+  <div class="brand">K0RE</div>
+  <button class="nav-tab active" onclick="showScreen(0)">01 · Login</button>
+  <button class="nav-tab" onclick="showScreen(1)">02 · Onboarding</button>
+  <button class="nav-tab" onclick="showScreen(2)">03 · Dashboard</button>
+  <button class="nav-tab" onclick="showScreen(3)">04 · KJ Chat</button>
+  <button class="nav-tab" onclick="showScreen(4)">05 · Capture</button>
+  <button class="nav-tab" onclick="showScreen(5)">06 · Feed</button>
+  <button class="nav-tab" onclick="showScreen(6)">07 · MeetingEye</button>
+  <button class="nav-tab" onclick="showScreen(7)">08 · Memory</button>
+  <button class="nav-tab" onclick="showScreen(8)">09 · Wearables</button>
+  <button class="nav-tab" onclick="showScreen(9)">10 · Network</button>
+  <button class="nav-tab" onclick="showScreen(10)">11 · Admin</button>
+  <button class="nav-tab" onclick="showScreen(11)">12 · Admin Memory</button>
+  <button class="nav-tab" onclick="showScreen(12)">13 · Mobile</button>
+</nav>
+
+
+<!-- ===================================================
+     SCREEN 01: LOGIN
+     =================================================== -->
+<div class="screen active" id="screen-0">
+  <div style="min-height:calc(100vh - 50px); display:flex; align-items:center; justify-content:center; background:var(--bg); padding:40px 20px;">
+    <div style="width:100%; max-width:380px;">
+
+      <!-- Logo -->
+      <div style="text-align:center; margin-bottom:40px;">
+        <div style="font-size:64px; font-weight:900; color:var(--gold); letter-spacing:8px; line-height:1; font-style:italic;">K0RE</div>
+        <div style="color:var(--secondary); font-size:13px; letter-spacing:2px; margin-top:10px; text-transform:uppercase;">The Sovereign Intelligence System</div>
+      </div>
+
+      <!-- Auth Buttons -->
+      <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:24px;">
+        <button class="btn btn-gold btn-full" style="font-size:15px; padding:14px; border-radius:10px;">
+          <span>🍎</span> Sign in with Apple
+        </button>
+        <button class="btn btn-outline btn-full" style="font-size:15px; padding:14px; border-radius:10px;">
+          <span>🔵</span> Sign in with Google
+        </button>
+      </div>
+
+      <div class="divider" style="margin-bottom:24px;">or</div>
+
+      <!-- Email / Password -->
+      <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:20px;">
+        <input type="email" placeholder="Email address">
+        <input type="password" placeholder="Password">
+        <button class="btn btn-gold btn-full" style="padding:13px; font-size:14px; border-radius:10px;">Continue →</button>
+      </div>
+
+      <div style="text-align:center; color:var(--secondary); font-size:12px;">
+        14-day free trial. No card required.
+      </div>
+
+      <div style="text-align:center; margin-top:16px; font-size:12px; color:var(--secondary);">
+        Already have an account? <span style="color:var(--gold); cursor:pointer;">Sign in</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ===================================================
+     SCREEN 02: ONBOARDING
+     =================================================== -->
+<div class="screen" id="screen-1">
+  <div style="min-height:calc(100vh - 50px); background:var(--bg); padding:40px 20px;">
+
+    <!-- Step nav -->
+    <div style="display:flex; gap:8px; justify-content:center; margin-bottom:8px;">
+      <button class="btn btn-ghost btn-xs" onclick="showStep(0)" id="step-btn-0" style="opacity:1; color:var(--gold);">Step 1</button>
+      <button class="btn btn-ghost btn-xs" onclick="showStep(1)" id="step-btn-1">Step 2</button>
+      <button class="btn btn-ghost btn-xs" onclick="showStep(2)" id="step-btn-2">Step 3</button>
+      <button class="btn btn-ghost btn-xs" onclick="showStep(3)" id="step-btn-3">Step 4</button>
+    </div>
+
+    <!-- STEP 1: Meet KJ -->
+    <div id="onboard-step-0" style="max-width:560px; margin:0 auto; padding-top:20px;">
+      <div class="step-dots">
+        <div class="step-dot active"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+      </div>
+
+      <div style="text-align:center; margin-bottom:32px;">
+        <div style="font-size:13px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:12px;">Meet KJ</div>
+        <h2 style="font-size:28px; font-weight:700; line-height:1.3;">KJ is about to meet you<br>for the first time.</h2>
+      </div>
+
+      <div class="card" style="margin-bottom:20px;">
+        <div style="font-size:13px; color:var(--secondary); margin-bottom:10px; font-weight:500;">What's been weighing on you lately?</div>
+        <textarea style="min-height:140px; font-size:15px;" placeholder="Be honest here — KJ reads tone, not just words. The more real you are, the more useful KJ becomes..."></textarea>
+        <div style="font-size:11px; color:var(--secondary); margin-top:8px;">Be honest. KJ doesn't judge.</div>
+      </div>
+
+      <button class="btn btn-gold btn-full" style="padding:14px; font-size:15px;" onclick="showStep(1)">Begin →</button>
+    </div>
+
+    <!-- STEP 2: Calibrate -->
+    <div id="onboard-step-1" style="display:none; max-width:600px; margin:0 auto; padding-top:20px;">
+      <div class="step-dots">
+        <div class="step-dot done"></div>
+        <div class="step-dot active"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+      </div>
+
+      <div style="text-align:center; margin-bottom:28px;">
+        <div style="font-size:13px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:12px;">Calibrate</div>
+        <h2 style="font-size:26px; font-weight:700;">Calibrate your K0RE Score</h2>
+        <p style="color:var(--secondary); margin-top:8px; font-size:14px;">Rate each domain honestly on a scale of 1–10</p>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:28px;">
+        <!-- Mental -->
+        <div class="card card-sm">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+            <span class="dot" style="background:#3B82F6;"></span>
+            <span style="font-weight:600; font-size:14px;">Mental</span>
+            <span style="color:var(--secondary); font-size:12px; margin-left:auto;">6/10</span>
+          </div>
+          <div style="font-size:12px; color:var(--secondary); margin-bottom:8px;">How sharp and focused has your mind felt lately?</div>
+          <input type="range" min="1" max="10" value="6">
+        </div>
+        <!-- Emotional -->
+        <div class="card card-sm">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+            <span class="dot" style="background:#10B981;"></span>
+            <span style="font-weight:600; font-size:14px;">Emotional</span>
+            <span style="color:var(--secondary); font-size:12px; margin-left:auto;">7/10</span>
+          </div>
+          <div style="font-size:12px; color:var(--secondary); margin-bottom:8px;">How regulated and grounded are you emotionally?</div>
+          <input type="range" min="1" max="10" value="7">
+        </div>
+        <!-- Physical -->
+        <div class="card card-sm">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+            <span class="dot" style="background:#F59E0B;"></span>
+            <span style="font-weight:600; font-size:14px;">Physical</span>
+            <span style="color:var(--secondary); font-size:12px; margin-left:auto;">8/10</span>
+          </div>
+          <div style="font-size:12px; color:var(--secondary); margin-bottom:8px;">How is your body feeling — energy, sleep, movement?</div>
+          <input type="range" min="1" max="10" value="8">
+        </div>
+        <!-- Spiritual -->
+        <div class="card card-sm">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+            <span class="dot" style="background:#8B5CF6;"></span>
+            <span style="font-weight:600; font-size:14px;">Spiritual</span>
+            <span style="color:var(--secondary); font-size:12px; margin-left:auto;">7/10</span>
+          </div>
+          <div style="font-size:12px; color:var(--secondary); margin-bottom:8px;">How connected do you feel to your purpose and values?</div>
+          <input type="range" min="1" max="10" value="7">
+        </div>
+        <!-- Financial -->
+        <div class="card card-sm" style="border-color:rgba(239,68,68,0.3);">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+            <span class="dot" style="background:#EF4444;"></span>
+            <span style="font-weight:600; font-size:14px;">Financial</span>
+            <span style="color:var(--secondary); font-size:12px; margin-left:auto;">4/10</span>
+          </div>
+          <div style="font-size:12px; color:var(--secondary); margin-bottom:8px;">How is your financial clarity, cashflow, and momentum?</div>
+          <input type="range" min="1" max="10" value="4">
+        </div>
+      </div>
+
+      <button class="btn btn-gold btn-full" style="padding:14px; font-size:15px;" onclick="showStep(2)">Calculate My Score →</button>
+    </div>
+
+    <!-- STEP 3: Aha Moment -->
+    <div id="onboard-step-2" style="display:none; max-width:560px; margin:0 auto; padding-top:20px;">
+      <div class="step-dots">
+        <div class="step-dot done"></div>
+        <div class="step-dot done"></div>
+        <div class="step-dot active"></div>
+        <div class="step-dot"></div>
+      </div>
+
+      <div style="text-align:center; margin-bottom:28px;">
+        <div style="font-size:13px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:12px;">Your K0RE Score</div>
+
+        <div style="display:flex; justify-content:center; margin-bottom:20px;">
+          <div class="score-ring-onboard">
+            <div class="score-ring-onboard-inner">
+              <div style="font-size:52px; font-weight:900; color:var(--gold); line-height:1;">62</div>
+              <div style="font-size:11px; color:var(--secondary); letter-spacing:1px;">K0RE SCORE</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="text-align:left; margin-bottom:16px; border-color:rgba(239,68,68,0.3);">
+          <div style="color:var(--danger); font-size:13px; font-weight:600; margin-bottom:6px;">⚠️ Financial domain is pulling your score down 18 points.</div>
+          <div style="color:var(--secondary); font-size:13px;">Your other domains are strong. This is a concentrated drag — and it's fixable.</div>
+        </div>
+
+        <div class="card" style="text-align:left;">
+          <div style="color:var(--secondary); font-size:12px; margin-bottom:12px; font-weight:600; letter-spacing:1px; text-transform:uppercase;">Here's the pattern KJ sees in people at your stage…</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div style="display:flex; gap:10px; font-size:13px; line-height:1.5;">
+              <span style="color:var(--gold);">→</span>
+              <span style="color:var(--white);">High-performers with strong mental & physical scores often deprioritize financial systems during scaling phases.</span>
+            </div>
+            <div style="display:flex; gap:10px; font-size:13px; line-height:1.5;">
+              <span style="color:var(--gold);">→</span>
+              <span style="color:var(--white);">Financial stress creates cognitive drag — users with sub-5 financial scores show 22% lower mental clarity scores.</span>
+            </div>
+            <div style="display:flex; gap:10px; font-size:13px; line-height:1.5;">
+              <span style="color:var(--gold);">→</span>
+              <span style="color:var(--white);">The fastest path to 80+ is resolving the single lowest domain. For you, that's financial.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-gold btn-full" style="padding:14px; font-size:15px;" onclick="showStep(3)">See Full Analysis →</button>
+    </div>
+
+    <!-- STEP 4: Choose Plan -->
+    <div id="onboard-step-3" style="display:none; max-width:820px; margin:0 auto; padding-top:20px;">
+      <div class="step-dots">
+        <div class="step-dot done"></div>
+        <div class="step-dot done"></div>
+        <div class="step-dot done"></div>
+        <div class="step-dot active"></div>
+      </div>
+
+      <div style="text-align:center; margin-bottom:28px;">
+        <div style="font-size:13px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:10px;">Choose Your Plan</div>
+        <h2 style="font-size:24px; font-weight:700;">KJ has enough to start.</h2>
+        <p style="color:var(--secondary); font-size:14px; margin-top:6px;">Keep building your intelligence with the right tier.</p>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:24px;">
+        <!-- CORE -->
+        <div class="card" style="text-align:center;">
+          <div style="font-size:11px; font-weight:700; letter-spacing:2px; color:var(--secondary); text-transform:uppercase; margin-bottom:8px;">CORE</div>
+          <div style="font-size:32px; font-weight:800; margin-bottom:4px;">$19</div>
+          <div style="color:var(--secondary); font-size:12px; margin-bottom:20px;">/month</div>
+          <div style="display:flex; flex-direction:column; gap:8px; text-align:left; margin-bottom:24px;">
+            <div style="font-size:12px; display:flex; gap:8px;"><span style="color:var(--success);">✓</span> Daily check-ins</div>
+            <div style="font-size:12px; display:flex; gap:8px;"><span style="color:var(--success);">✓</span> K0RE Score tracking</div>
+            <div style="font-size:12px; display:flex; gap:8px;"><span style="color:var(--success);">✓</span> 30-day memory</div>
+            <div style="font-size:12px; display:flex; gap:8px;"><span style="color:var(--secondary);">✗</span> <span style="color:var(--secondary);">Voice interaction</span></div>
+            <div style="font-size:12px; display:flex; gap:8px;"><span style="color:var(--secondary);">✗</span> <span style="color:var(--secondary);">Weekly intel reports</span></div>
+          </div>
+          <button class="btn btn-outline btn-full btn-sm">Select Core</button>
+        </div>
+
+        <!-- SOVEREIGN (featured) -->
+        <div class="card" style="text-align:center; border-color:var(--gold); position:relative;">
+          <div style="position:absolute; top:-10px; left:50%; transform:translateX(-50%);">
+            <span class="badge badge-gold">⭐ Most Popular</span>
+          </div>
+          <div style="font-size:11px; font-weight:700; letter-spacing:2px; color:var(--gold); text-transform:uppercase; margin-bottom:8px; margin-top:8px;">SOVEREIGN</div>
+          <div style="font-size:32px; font-weight:800; margin-bottom:4px; color:var(--gold);">$49</div>
+          <div style="color:var(--secondary); font-size:12px; margin-bottom:20px;">/month</div>
+          <div style="display:flex; flex-direction:column; gap:8px; text-align:left; margin-bottom:24px;">
+            <div style="font-size:12px; display:flex; gap:8px;"><span style="color:var(--success);">✓</span> Everything in Core</div>
+            <div style="font-size:12px; display:flex; gap:8px;"><span style="color:var(--success);">✓</span> Full memory (unlimited)</div>
+            <div style="font-size:12px; display:flex; gap:8px;"><span style="color:var(--success);">✓</span> Weekly intel reports</div>
+            <div style="font-size:12px; display:flex; gap:8px;"><span style="color:var(--success);">✓</span> Voice interaction with KJ</div>
+            <div style="font-size:12px; display:flex; gap:8px;"><span style="color:var(--success);">✓</span> MeetingEye (3 calls/mo)</div>
+          </div>
+          <button class="btn btn-gold btn-full btn-sm">Start SOVEREIGN</button>
+        </div>
+
+        <!-- COMMANDER -->
+        <div class="card" style="text-align:center;">
+          <div style="font-size:11px; font-weight:700; letter-spacing:2px; color:var(--secondary); text-transform:uppercase; margin-bottom:8px;">COMMANDER</div>
+          <div style="font-size:32px; font-weight:800; margin-bottom:4px;">$149</div>
+          <div style="color:var(--secondary); font-size:12px; margin-bottom:20px;">/month</div>
+          <div style="display:flex; flex-direction:column; gap:8px; text-align:left; margin-bottom:24px;">
+            <div style="font-size:12px; display:flex; gap:8px;"><span style="color:var(--success);">✓</span> Everything in Sovereign</div>
+            <div style="font-size:12px; display:flex; gap:8px;"><span style="color:var(--success);">✓</span> TRMIG deal alerts</div>
+            <div style="font-size:12px; display:flex; gap:8px;"><span style="color:var(--success);">✓</span> SOT access</div>
+            <div style="font-size:12px; display:flex; gap:8px;"><span style="color:var(--success);">✓</span> Monthly KJ live session</div>
+            <div style="font-size:12px; display:flex; gap:8px;"><span style="color:var(--success);">✓</span> Priority agent dispatch</div>
+          </div>
+          <button class="btn btn-outline btn-full btn-sm">Select Commander</button>
+        </div>
+      </div>
+
+      <div style="text-align:center;">
+        <a style="color:var(--secondary); font-size:13px; cursor:pointer; text-decoration:underline;">Continue with 14-day trial →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ===================================================
+     SCREEN 03: CUSTOMER DASHBOARD
+     =================================================== -->
+<div class="screen" id="screen-2">
+  <div style="padding:24px; max-width:1400px; margin:0 auto; position:relative;">
+
+    <!-- Page header -->
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+      <div>
+        <div style="font-size:11px; color:var(--secondary); letter-spacing:1px; text-transform:uppercase;">Good morning</div>
+        <h1 style="font-size:22px; font-weight:700; color:var(--white);">Jason Allen John</h1>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span class="badge badge-success">● Live</span>
+        <span style="color:var(--secondary); font-size:13px;">Mon, Mar 2 · 11:47 AM</span>
+        <div style="width:32px; height:32px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; color:#000;">JJ</div>
+      </div>
+    </div>
+
+    <!-- 3-column grid -->
+    <div style="display:grid; grid-template-columns:1fr 2fr 1fr; gap:16px;">
+
+      <!-- LEFT COLUMN -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+
+        <!-- Domain Scores -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <div class="label">Domain Scores</div>
+            <span class="badge badge-secondary">Today</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div>
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:5px;">
+                <span class="dot" style="background:#3B82F6;"></span>
+                <span style="font-size:13px; flex:1;">Mental</span>
+                <span style="font-size:13px; font-weight:600;">7.2<span style="color:var(--secondary); font-weight:400;">/10</span></span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:72%; background:#3B82F6;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:5px;">
+                <span class="dot" style="background:#10B981;"></span>
+                <span style="font-size:13px; flex:1;">Emotional</span>
+                <span style="font-size:13px; font-weight:600;">7.8<span style="color:var(--secondary); font-weight:400;">/10</span></span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:78%; background:#10B981;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:5px;">
+                <span class="dot" style="background:#F59E0B;"></span>
+                <span style="font-size:13px; flex:1;">Physical</span>
+                <span style="font-size:13px; font-weight:600;">8.2<span style="color:var(--secondary); font-weight:400;">/10</span></span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:82%; background:#F59E0B;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:5px;">
+                <span class="dot" style="background:#8B5CF6;"></span>
+                <span style="font-size:13px; flex:1;">Spiritual</span>
+                <span style="font-size:13px; font-weight:600;">7.5<span style="color:var(--secondary); font-weight:400;">/10</span></span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:75%; background:#8B5CF6;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:5px;">
+                <span class="dot" style="background:#EF4444;"></span>
+                <span style="font-size:13px; flex:1;">Financial</span>
+                <span style="font-size:13px; font-weight:600;">4.1<span style="color:var(--secondary); font-weight:400;">/10</span></span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:41%; background:#EF4444;"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pattern Insights -->
+        <div class="card">
+          <div class="label" style="margin-bottom:12px;">Pattern Insights</div>
+          <div style="font-size:13px; color:var(--gold); font-weight:600; margin-bottom:12px;">📊 You score highest on Thursdays</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="font-size:12px; color:var(--secondary); display:flex; gap:6px;">
+              <span>→</span> Physical scores peak after 7h+ sleep (3-day lag)
+            </div>
+            <div style="font-size:12px; color:var(--secondary); display:flex; gap:6px;">
+              <span>→</span> Mental clarity dips on Sundays — rest day conflict
+            </div>
+            <div style="font-size:12px; color:var(--secondary); display:flex; gap:6px;">
+              <span>→</span> Financial stress elevates when 3+ deals are active simultaneously
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CENTER COLUMN -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+
+        <!-- K0RE Score Card -->
+        <div class="card">
+          <div style="display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
+            <div style="position:relative; width:140px; height:140px; flex-shrink:0;">
+              <div class="score-ring">
+                <div class="score-ring-inner">
+                  <div class="score-num">72</div>
+                  <div class="score-label">K0RE</div>
+                </div>
+              </div>
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex; align-items:baseline; gap:8px; margin-bottom:6px;">
+                <div style="font-size:28px; font-weight:800;">72</div>
+                <div style="color:var(--success); font-size:14px; font-weight:600;">↑ +8 pts this month</div>
+              </div>
+              <div style="color:var(--secondary); font-size:13px; margin-bottom:16px;">Your sovereign score across 5 life domains</div>
+              <div style="display:flex; gap:16px;">
+                <div>
+                  <div style="font-size:10px; color:var(--secondary); text-transform:uppercase; letter-spacing:1px;">30-day high</div>
+                  <div style="font-size:16px; font-weight:700; color:var(--gold);">79</div>
+                </div>
+                <div>
+                  <div style="font-size:10px; color:var(--secondary); text-transform:uppercase; letter-spacing:1px;">30-day low</div>
+                  <div style="font-size:16px; font-weight:700;">61</div>
+                </div>
+                <div>
+                  <div style="font-size:10px; color:var(--secondary); text-transform:uppercase; letter-spacing:1px;">Streak</div>
+                  <div style="font-size:16px; font-weight:700; color:var(--gold);">11 days</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sparkline -->
+          <div style="margin-top:16px;">
+            <div style="font-size:10px; color:var(--secondary); letter-spacing:1px; text-transform:uppercase; margin-bottom:6px;">30-Day Trend</div>
+            <div class="sparkline"></div>
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--secondary); margin-top:4px;">
+              <span>Feb 1</span><span>Feb 8</span><span>Feb 15</span><span>Feb 22</span><span>Mar 2</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Domain mini grid -->
+        <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:8px;">
+          <div class="card card-sm" style="text-align:center; padding:12px 8px;">
+            <div style="color:#3B82F6; font-size:18px; font-weight:700; margin-bottom:2px;">7.2</div>
+            <div style="font-size:10px; color:var(--secondary);">Mental</div>
+          </div>
+          <div class="card card-sm" style="text-align:center; padding:12px 8px;">
+            <div style="color:#10B981; font-size:18px; font-weight:700; margin-bottom:2px;">7.8</div>
+            <div style="font-size:10px; color:var(--secondary);">Emotional</div>
+          </div>
+          <div class="card card-sm" style="text-align:center; padding:12px 8px;">
+            <div style="color:#F59E0B; font-size:18px; font-weight:700; margin-bottom:2px;">8.2</div>
+            <div style="font-size:10px; color:var(--secondary);">Physical</div>
+          </div>
+          <div class="card card-sm" style="text-align:center; padding:12px 8px;">
+            <div style="color:#8B5CF6; font-size:18px; font-weight:700; margin-bottom:2px;">7.5</div>
+            <div style="font-size:10px; color:var(--secondary);">Spiritual</div>
+          </div>
+          <div class="card card-sm" style="text-align:center; padding:12px 8px;">
+            <div style="color:#EF4444; font-size:18px; font-weight:700; margin-bottom:2px;">4.1</div>
+            <div style="font-size:10px; color:var(--secondary);">Financial</div>
+          </div>
+        </div>
+
+        <!-- Check-in Banner -->
+        <div class="card" style="background:linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.03)); border-color:var(--border-gold); display:flex; align-items:center; gap:16px;">
+          <div style="font-size:28px;">🌅</div>
+          <div style="flex:1;">
+            <div style="font-weight:600; margin-bottom:3px;">You haven't checked in today</div>
+            <div style="color:var(--secondary); font-size:12px;">KJ is waiting to hear from you. Takes 2 minutes.</div>
+          </div>
+          <button class="btn btn-gold btn-sm">Check In Now</button>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+
+        <!-- KJ KNOWS -->
+        <div class="card">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+            <div class="label">KJ Knows</div>
+            <span style="color:var(--gold); font-size:12px; cursor:pointer;">View Memory →</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:10px; border-left:3px solid var(--blue);">
+              <div style="font-size:12px; color:var(--secondary); margin-bottom:3px;">Pattern detected</div>
+              <div style="font-size:13px; line-height:1.4;">Your best weeks start with a Sunday evening plan. You haven't done one in 2 weeks.</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:10px; border-left:3px solid var(--gold);">
+              <div style="font-size:12px; color:var(--secondary); margin-bottom:3px;">Memory context</div>
+              <div style="font-size:13px; line-height:1.4;">Kingston Rd deal tension is correlating with financial score drop. 4th consecutive day.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coherence Index -->
+        <div class="card card-sm">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <div>
+              <div class="label" style="margin-bottom:4px;">Coherence Index</div>
+              <div style="font-size:24px; font-weight:800; color:var(--gold);">8.2<span style="font-size:14px; color:var(--secondary);">/10</span></div>
+              <div style="font-size:11px; color:var(--success); margin-top:2px;">↑ High alignment today</div>
+            </div>
+            <div style="width:48px; height:48px; border-radius:50%; background:conic-gradient(var(--gold) 0deg 295deg, rgba(255,255,255,0.06) 295deg); display:flex; align-items:center; justify-content:center;">
+              <div style="width:36px; height:36px; border-radius:50%; background:var(--card);"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Today's Focus -->
+        <div class="card card-sm" style="border-left:3px solid var(--danger); border-left-width:3px;">
+          <div class="label" style="margin-bottom:6px;">Today's Focus</div>
+          <div style="font-size:13px; line-height:1.4; color:var(--white);">⚠️ Prioritize financial domain</div>
+          <div style="font-size:12px; color:var(--secondary); margin-top:4px;">Neglected 4 days. Pattern risk escalating.</div>
+          <button class="btn btn-ghost btn-xs" style="margin-top:10px;">Ask KJ for a plan →</button>
+        </div>
+
+        <!-- MeetingEye -->
+        <div class="card card-sm">
+          <div class="label" style="margin-bottom:8px;">MeetingEye</div>
+          <div style="font-size:13px; margin-bottom:10px;">📡 Drop a meeting link — KJ joins as a silent observer</div>
+          <input type="text" placeholder="https://zoom.us/j/..." style="margin-bottom:8px; font-size:12px; padding:8px 12px;">
+          <button class="btn btn-gold btn-full btn-sm">Join Meeting</button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Floating Capture Button -->
+    <div class="float-btn" title="Capture">+</div>
+
+  </div>
+</div>
+
+
+<!-- ===================================================
+     SCREEN 04: KJ CHAT
+     =================================================== -->
+<div class="screen" id="screen-3">
+  <div style="height:calc(100vh - 50px); display:flex; flex-direction:column; max-width:800px; margin:0 auto;">
+
+    <!-- Chat Header -->
+    <div style="padding:16px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; flex-shrink:0;">
+      <div style="width:40px; height:40px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; color:#000; font-size:16px;">KJ</div>
+      <div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:16px; font-weight:700;">KJ</span>
+          <span class="dot dot-success"></span>
+          <span style="font-size:11px; color:var(--success);">Active</span>
+        </div>
+        <div style="font-size:11px; color:var(--secondary);">47 check-ins · 1,284 memory vectors</div>
+      </div>
+      <div style="margin-left:auto; display:flex; gap:8px;">
+        <button class="btn btn-ghost btn-xs">📊 Analysis</button>
+        <button class="btn btn-ghost btn-xs">🧠 Memory</button>
+      </div>
+    </div>
+
+    <!-- Chat Messages -->
+    <div style="flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:16px;">
+
+      <!-- Date separator -->
+      <div style="text-align:center; font-size:11px; color:var(--secondary);">Today, 8:02 AM</div>
+
+      <!-- KJ message -->
+      <div style="display:flex; gap:10px; align-items:flex-start;">
+        <div style="width:32px; height:32px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:11px; color:#000; flex-shrink:0;">KJ</div>
+        <div>
+          <div class="chat-bubble kj">
+            Good morning Jason. Physical score up 2pts this week — you're consistent. 🏆<br><br>
+            Financial domain is still flagging. Want me to run your weekly analysis?
+          </div>
+          <div style="font-size:10px; color:var(--secondary); margin-top:4px;">8:02 AM</div>
+        </div>
+      </div>
+
+      <!-- User message -->
+      <div style="display:flex; flex-direction:column; align-items:flex-end;">
+        <div class="chat-bubble user">Yes, and check TRMIG deal status — 2759 Kingston.</div>
+        <div style="font-size:10px; color:var(--secondary); margin-top:4px;">8:04 AM</div>
+      </div>
+
+      <!-- KJ long response -->
+      <div style="display:flex; gap:10px; align-items:flex-start;">
+        <div style="width:32px; height:32px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:11px; color:#000; flex-shrink:0;">KJ</div>
+        <div style="max-width:75%;">
+          <div class="chat-bubble kj">
+            <strong>Weekly Analysis:</strong><br>
+            K0RE Score trend: <span style="color:var(--success);">+8 pts over 30 days ↑</span> — momentum is real.<br><br>
+            <strong>TRMIG — 2759 Kingston Rd:</strong><br>
+            Status: <span style="color:var(--gold);">Conditional GO</span> — permits pending.<br>
+            Est. value at completion: ~$450K. Timeline risk: 3–6 weeks.<br>
+            3 blockers identified. Want me to flag them?
+          </div>
+          <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
+            <button class="btn btn-ghost btn-xs">Flag Blockers</button>
+            <button class="btn btn-ghost btn-xs">View Deal File</button>
+            <button class="btn btn-ghost btn-xs">Full Analysis</button>
+          </div>
+          <div style="font-size:10px; color:var(--secondary); margin-top:4px;">8:05 AM</div>
+        </div>
+      </div>
+
+      <!-- User -->
+      <div style="display:flex; flex-direction:column; align-items:flex-end;">
+        <div class="chat-bubble user">Flag blockers and add to task queue</div>
+        <div style="font-size:10px; color:var(--secondary); margin-top:4px;">8:06 AM</div>
+      </div>
+
+      <!-- KJ -->
+      <div style="display:flex; gap:10px; align-items:flex-start;">
+        <div style="width:32px; height:32px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:11px; color:#000; flex-shrink:0;">KJ</div>
+        <div>
+          <div class="chat-bubble kj">
+            Done. <span style="color:var(--success);">3 blockers logged</span>. CLAWD queued for permit follow-up.<br><br>
+            <div style="background:rgba(255,255,255,0.05); border-radius:8px; padding:10px; margin-top:6px; font-size:12px;">
+              <div style="margin-bottom:4px;">📌 <strong>Blocker 1:</strong> Site plan approval — City Planning, 2–4 wks</div>
+              <div style="margin-bottom:4px;">📌 <strong>Blocker 2:</strong> Structural sign-off — engineer to contact</div>
+              <div>📌 <strong>Blocker 3:</strong> Utility servicing agreement — Toronto Hydro</div>
+            </div>
+            <br>Anything else?
+          </div>
+          <div style="font-size:10px; color:var(--secondary); margin-top:4px;">8:06 AM</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Input Bar -->
+    <div style="padding:12px 16px; border-top:1px solid var(--border); flex-shrink:0;">
+      <div style="display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:8px 12px;">
+        <button style="background:none; border:none; color:var(--secondary); cursor:pointer; font-size:18px; padding:2px;">📷</button>
+        <button style="background:none; border:none; color:var(--secondary); cursor:pointer; font-size:18px; padding:2px;">🎙️</button>
+        <input type="text" placeholder="Message KJ..." style="border:none; background:none; flex:1; padding:4px; font-size:14px;">
+        <button class="btn btn-gold btn-sm" style="border-radius:8px; padding:8px 16px;">Send</button>
+      </div>
+      <div style="text-align:center; font-size:11px; color:var(--secondary); margin-top:8px;">
+        KJ remembers your last 47 check-ins and 23 conversations
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ===================================================
+     SCREEN 05: CAPTURE HUB
+     =================================================== -->
+<div class="screen" id="screen-4">
+  <div style="padding:32px 24px; max-width:960px; margin:0 auto;">
+
+    <div style="margin-bottom:28px;">
+      <div style="font-size:11px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;">Portal · /capture</div>
+      <h1 style="font-size:28px; font-weight:800; margin-bottom:6px;">Capture a Moment</h1>
+      <p style="color:var(--secondary); font-size:15px;">Everything you feed KJ becomes intelligence.</p>
+    </div>
+
+    <!-- 6 Capture Cards 2x3 -->
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:40px;">
+
+      <!-- Voice Note -->
+      <div class="card" style="text-align:center; padding:28px 20px; cursor:pointer; transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:36px; margin-bottom:12px;">🎙️</div>
+        <div style="font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px;">Voice Note</div>
+        <div style="color:var(--secondary); font-size:12px; line-height:1.5; margin-bottom:16px;">Record anything. KJ transcribes + tags automatically.</div>
+        <button class="btn btn-gold btn-sm btn-full">Start Recording</button>
+      </div>
+
+      <!-- Phone Call -->
+      <div class="card" style="text-align:center; padding:28px 20px; cursor:pointer;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:36px; margin-bottom:12px;">📞</div>
+        <div style="font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px;">Phone Call</div>
+        <div style="color:var(--secondary); font-size:12px; line-height:1.5; margin-bottom:16px;">Upload a recording or paste a transcript.</div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-outline btn-sm" style="flex:1; font-size:11px;">Upload</button>
+          <button class="btn btn-ghost btn-sm" style="flex:1; font-size:11px;">Paste</button>
+        </div>
+      </div>
+
+      <!-- Meeting / Zoom -->
+      <div class="card" style="text-align:center; padding:28px 20px; cursor:pointer;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:36px; margin-bottom:12px;">💻</div>
+        <div style="font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px;">Meeting / Zoom</div>
+        <div style="color:var(--secondary); font-size:12px; line-height:1.5; margin-bottom:16px;">Drop your meeting link. KJ joins as silent observer.</div>
+        <input type="text" placeholder="https://zoom.us/j/..." style="font-size:12px; padding:8px 12px; margin-bottom:8px;">
+        <button class="btn btn-gold btn-sm btn-full">Enter Meeting Link</button>
+      </div>
+
+      <!-- Camera -->
+      <div class="card" style="text-align:center; padding:28px 20px; cursor:pointer;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:36px; margin-bottom:12px;">📷</div>
+        <div style="font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px;">Camera</div>
+        <div style="color:var(--secondary); font-size:12px; line-height:1.5; margin-bottom:16px;">Show KJ something. Point your camera at anything.</div>
+        <button class="btn btn-gold btn-sm btn-full">Open Camera</button>
+      </div>
+
+      <!-- Wearable Sync -->
+      <div class="card" style="text-align:center; padding:28px 20px; cursor:pointer;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:36px; margin-bottom:12px;">⌚</div>
+        <div style="font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px;">Wearable Sync</div>
+        <div style="color:var(--secondary); font-size:12px; line-height:1.5; margin-bottom:12px;">Sync Apple Watch, Whoop, or Oura data.</div>
+        <div style="display:flex; justify-content:center; gap:12px; margin-bottom:12px; font-size:20px;">
+          <span title="Apple Watch">⌚</span>
+          <span title="Whoop" style="background:#1a1a2e; border-radius:4px; padding:2px 4px; font-size:14px; color:var(--secondary);">W</span>
+          <span title="Oura" style="background:#1a1a2e; border-radius:4px; padding:2px 4px; font-size:14px; color:var(--secondary);">O</span>
+        </div>
+        <button class="btn btn-gold btn-sm btn-full">Connect Device</button>
+      </div>
+
+      <!-- Quick Note -->
+      <div class="card" style="text-align:center; padding:28px 20px; cursor:pointer;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:36px; margin-bottom:12px;">📝</div>
+        <div style="font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px;">Quick Note</div>
+        <div style="color:var(--secondary); font-size:12px; line-height:1.5; margin-bottom:16px;">Type anything. KJ will figure out what it means.</div>
+        <button class="btn btn-gold btn-sm btn-full">Open Note</button>
+      </div>
+
+    </div>
+
+    <!-- Recent Captures -->
+    <div>
+      <div class="label" style="margin-bottom:14px;">Recent Captures</div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <div class="card card-sm" style="display:flex; align-items:center; gap:12px;">
+          <div style="font-size:20px; width:36px; text-align:center;">🎙️</div>
+          <div style="flex:1;">
+            <div style="font-size:13px; font-weight:500;">Voice note — morning reflection</div>
+            <div style="font-size:11px; color:var(--secondary);">Today, 7:15 AM</div>
+          </div>
+          <span class="badge badge-blue">Mental</span>
+          <button class="btn btn-ghost btn-xs">Discuss →</button>
+        </div>
+        <div class="card card-sm" style="display:flex; align-items:center; gap:12px;">
+          <div style="font-size:20px; width:36px; text-align:center;">💻</div>
+          <div style="flex:1;">
+            <div style="font-size:13px; font-weight:500;">Zoom with Marco Colozza — deal review</div>
+            <div style="font-size:11px; color:var(--secondary);">Yesterday, 2:30 PM · 45 min</div>
+          </div>
+          <span class="badge badge-secondary">Financial</span>
+          <button class="btn btn-ghost btn-xs">Discuss →</button>
+        </div>
+        <div class="card card-sm" style="display:flex; align-items:center; gap:12px;">
+          <div style="font-size:20px; width:36px; text-align:center;">⌚</div>
+          <div style="flex:1;">
+            <div style="font-size:13px; font-weight:500;">Apple Watch sync — overnight data</div>
+            <div style="font-size:11px; color:var(--secondary);">Today, 6:02 AM · Auto-sync</div>
+          </div>
+          <span class="badge" style="background:rgba(245,158,11,0.15); color:var(--orange);">Physical</span>
+          <button class="btn btn-ghost btn-xs">Discuss →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ===================================================
+     SCREEN 06: DATA DISCUSSION FEED
+     =================================================== -->
+<div class="screen" id="screen-5">
+  <div style="padding:32px 24px; max-width:760px; margin:0 auto;">
+
+    <div style="margin-bottom:28px;">
+      <div style="font-size:11px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;">Portal · /insights</div>
+      <h1 style="font-size:28px; font-weight:800; margin-bottom:6px;">Your Intelligence Feed</h1>
+      <p style="color:var(--secondary); font-size:15px;">KJ speaks. You respond. The loop closes.</p>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:16px;">
+
+      <!-- Card 1: Morning Check-In -->
+      <div class="card" style="border-left:4px solid var(--gold);">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+          <span style="font-size:18px;">🌅</span>
+          <div>
+            <div style="font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold);">Morning Check-In</div>
+            <div style="font-size:11px; color:var(--secondary);">Today, 7:42 AM</div>
+          </div>
+          <span class="badge badge-secondary" style="margin-left:auto;">Financial</span>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:14px; margin-bottom:14px; font-size:14px; line-height:1.6; border-left:3px solid var(--gold);">
+          "Your financial score dropped for the <strong>4th consecutive day</strong>. Last time this happened (Nov 2025), it preceded a 3-week low.<br><br>
+          What's driving this?"
+        </div>
+
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-ghost btn-xs">It's a specific deal</button>
+          <button class="btn btn-ghost btn-xs">General stress</button>
+          <button class="btn btn-ghost btn-xs">Not sure</button>
+          <button class="btn btn-gold btn-xs" style="margin-left:auto;">Discuss with KJ →</button>
+        </div>
+      </div>
+
+      <!-- Card 2: Zoom Call -->
+      <div class="card" style="border-left:4px solid var(--blue);">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+          <span style="font-size:18px;">💻</span>
+          <div>
+            <div style="font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--blue);">Zoom Call — Marco</div>
+            <div style="font-size:11px; color:var(--secondary);">Yesterday, 2:30 PM · 2 hrs ago</div>
+          </div>
+          <span class="badge badge-blue" style="margin-left:auto;">MeetingEye</span>
+        </div>
+
+        <div style="font-size:13px; font-weight:600; margin-bottom:10px;">3 key signals from your call:</div>
+        <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:14px; margin-bottom:14px;">
+          <div style="display:flex; flex-direction:column; gap:8px; font-size:13px; line-height:1.5;">
+            <div style="display:flex; gap:10px;">
+              <span style="color:var(--danger);">●</span>
+              <span>Cash flow mentioned <strong>twice</strong> with tension in voice</span>
+            </div>
+            <div style="display:flex; gap:10px;">
+              <span style="color:var(--success);">●</span>
+              <span>Marco aligned on timeline <span style="color:var(--success);">(high confidence)</span></span>
+            </div>
+            <div style="display:flex; gap:10px;">
+              <span style="color:var(--gold);">●</span>
+              <span>You seemed energized in first 30 min, energy dropped after</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-ghost btn-xs">Dig into cash flow</button>
+          <button class="btn btn-ghost btn-xs">Log Marco alignment</button>
+          <button class="btn btn-gold btn-xs" style="margin-left:auto;">View full report →</button>
+        </div>
+      </div>
+
+      <!-- Card 3: Weekly Pattern -->
+      <div class="card" style="border-left:4px solid var(--purple);">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+          <span style="font-size:18px;">📊</span>
+          <div>
+            <div style="font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--purple);">Weekly Pattern</div>
+            <div style="font-size:11px; color:var(--secondary);">Sunday · Auto-generated</div>
+          </div>
+          <span class="badge badge-purple" style="margin-left:auto;">7-Day Review</span>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:14px; margin-bottom:14px; font-size:14px; line-height:1.6;">
+          You've achieved your <strong>Perfect Day</strong> <span style="color:var(--gold);">3 of 7 days</span> this week.<br><br>
+          <span style="color:var(--orange);">Physical</span> is your strongest domain — <strong>8.2 avg</strong>.<br>
+          <span style="color:var(--danger);">Financial</span> domain needs attention — <strong>4.1 avg</strong>.
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px;">
+          <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:10px; text-align:center;">
+            <div style="font-size:20px; font-weight:700; color:var(--gold);">3/7</div>
+            <div style="font-size:10px; color:var(--secondary);">Perfect Days</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:10px; text-align:center;">
+            <div style="font-size:20px; font-weight:700; color:var(--success);">+3 pts</div>
+            <div style="font-size:10px; color:var(--secondary);">Score change</div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-ghost btn-xs">Set financial intention</button>
+          <button class="btn btn-gold btn-xs" style="margin-left:auto;">View week summary →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ===================================================
+     SCREEN 07: MEETINGEYE REPORT
+     =================================================== -->
+<div class="screen" id="screen-6">
+  <div style="padding:32px 24px; max-width:800px; margin:0 auto;">
+
+    <!-- Header -->
+    <div style="margin-bottom:28px;">
+      <div style="font-size:11px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;">MeetingEye · Intelligence Report</div>
+      <h1 style="font-size:26px; font-weight:800; margin-bottom:8px;">Meeting Intelligence Report</h1>
+      <div style="display:flex; align-items:center; gap:12px; color:var(--secondary); font-size:13px; flex-wrap:wrap;">
+        <span>💻 Zoom with Marco Colozza</span>
+        <span>·</span>
+        <span>45 min</span>
+        <span>·</span>
+        <span>Feb 28, 2026 · 2:30 PM</span>
+        <span class="badge badge-gold" style="margin-left:4px;">Analyzed</span>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:16px;">
+
+      <!-- Executive Summary -->
+      <div class="card">
+        <div class="label" style="margin-bottom:12px;">Executive Summary</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="display:flex; gap:10px; font-size:13px; line-height:1.5;">
+            <span style="color:var(--gold);">→</span>
+            <span>Deal progressing positively — Marco confirmed timeline alignment with high confidence</span>
+          </div>
+          <div style="display:flex; gap:10px; font-size:13px; line-height:1.5;">
+            <span style="color:var(--danger);">→</span>
+            <span>Cash flow friction is the primary blocker — surfaced twice, each time with measurable vocal tension</span>
+          </div>
+          <div style="display:flex; gap:10px; font-size:13px; line-height:1.5;">
+            <span style="color:var(--success);">→</span>
+            <span>Overall momentum positive. Recommend follow-up on financing structure within 7 days</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2-col layout -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+
+        <!-- Key Decisions -->
+        <div class="card">
+          <div class="label" style="margin-bottom:12px;">Key Decisions Made</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer; font-size:13px;">
+              <input type="checkbox" checked style="margin-top:2px; accent-color:var(--gold);">
+              <span>2759 Kingston proceeds to conditional GO with $450K target</span>
+            </label>
+            <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer; font-size:13px;">
+              <input type="checkbox" checked style="margin-top:2px; accent-color:var(--gold);">
+              <span>Marco to provide updated cashflow model by Mar 7</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Action Items -->
+        <div class="card">
+          <div class="label" style="margin-bottom:12px;">Action Items</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div style="font-size:13px; display:flex; gap:8px; align-items:flex-start;">
+              <span class="badge badge-blue" style="flex-shrink:0;">CLAWD</span>
+              <span>Follow up on permit status — City Planning</span>
+            </div>
+            <div style="font-size:13px; display:flex; gap:8px; align-items:flex-start;">
+              <span class="badge badge-gold" style="flex-shrink:0;">KJ</span>
+              <span>Analyze Marco's cashflow model when received</span>
+            </div>
+            <div style="font-size:13px; display:flex; gap:8px; align-items:flex-start;">
+              <span class="badge badge-gold" style="flex-shrink:0;">KJ</span>
+              <span>Flag if financial score remains below 5 by Friday</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Emotional Dynamics -->
+      <div class="card">
+        <div class="label" style="margin-bottom:14px;">Emotional Dynamics</div>
+        <div style="display:flex; gap:20px; align-items:flex-end; height:80px; margin-bottom:8px;">
+          <div style="flex:1; text-align:center;">
+            <div style="background:var(--gold); border-radius:4px 4px 0 0; height:60px; opacity:0.8;"></div>
+          </div>
+          <div style="flex:1; text-align:center;">
+            <div style="background:var(--blue); border-radius:4px 4px 0 0; height:75px; opacity:0.8;"></div>
+          </div>
+          <div style="flex:1; text-align:center;">
+            <div style="background:var(--secondary); border-radius:4px 4px 0 0; height:45px; opacity:0.8;"></div>
+          </div>
+          <div style="flex:1; text-align:center;">
+            <div style="background:var(--success); border-radius:4px 4px 0 0; height:65px; opacity:0.8;"></div>
+          </div>
+        </div>
+        <div style="display:flex; gap:20px;">
+          <div style="flex:1; text-align:center; font-size:10px; color:var(--secondary);">You (Energy)</div>
+          <div style="flex:1; text-align:center; font-size:10px; color:var(--secondary);">You (Confidence)</div>
+          <div style="flex:1; text-align:center; font-size:10px; color:var(--secondary);">Marco (Energy)</div>
+          <div style="flex:1; text-align:center; font-size:10px; color:var(--secondary);">Marco (Alignment)</div>
+        </div>
+      </div>
+
+      <!-- Domain Impact -->
+      <div class="card">
+        <div class="label" style="margin-bottom:12px;">K0RE Domain Impact</div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:6px; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); border-radius:8px; padding:8px 12px;">
+            <span class="dot" style="background:#EF4444;"></span>
+            <span style="font-size:12px;">Financial</span>
+            <span style="font-size:12px; color:var(--danger); font-weight:600;">↓ −0.4</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px; background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.3); border-radius:8px; padding:8px 12px;">
+            <span class="dot" style="background:#3B82F6;"></span>
+            <span style="font-size:12px;">Mental</span>
+            <span style="font-size:12px; color:var(--danger); font-weight:600;">↓ −0.2</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px; background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); border-radius:8px; padding:8px 12px;">
+            <span class="dot" style="background:#10B981;"></span>
+            <span style="font-size:12px;">Emotional</span>
+            <span style="font-size:12px; color:var(--secondary); font-weight:600;">→ Neutral</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coaching Note -->
+      <div class="card" style="background:linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,175,55,0.02)); border-color:var(--border-gold);">
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <div style="width:36px; height:36px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; color:#000; flex-shrink:0;">KJ</div>
+          <div>
+            <div style="font-size:11px; color:var(--gold); font-weight:600; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px;">Coaching Note from KJ</div>
+            <div style="font-size:14px; line-height:1.6; color:var(--white);">
+              "Your energy dropped significantly at the <strong>32-minute mark</strong> — this coincides exactly with the cash flow discussion. Pattern: <span style="color:var(--gold);">financial stress triggers physical withdrawal</span>. You tend to disengage physically when financial pressure spikes. This is worth addressing before your next call with Marco."
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn btn-gold">Add to Memory</button>
+        <button class="btn btn-outline">Share Report</button>
+        <button class="btn btn-outline">Schedule Follow-up</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ===================================================
+     SCREEN 08: MEMORY PAGE
+     =================================================== -->
+<div class="screen" id="screen-7">
+  <div style="padding:32px 24px; max-width:800px; margin:0 auto;">
+
+    <!-- Header -->
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
+      <div>
+        <div style="font-size:11px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;">Portal · /memory</div>
+        <h1 style="font-size:26px; font-weight:800;">Your Memory</h1>
+        <p style="color:var(--secondary); font-size:14px; margin-top:4px;">What KJ knows about you</p>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px; background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:10px 14px;">
+        <span>🛡️</span>
+        <div>
+          <div style="font-size:12px; font-weight:600; color:var(--success);">Privacy Protected</div>
+          <div style="font-size:10px; color:var(--secondary);">Your data never leaves K0RE servers</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="card" style="display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-bottom:20px; padding:0; overflow:hidden;">
+      <div style="padding:16px; text-align:center; border-right:1px solid var(--border);">
+        <div style="font-size:22px; font-weight:800; color:var(--gold);">47</div>
+        <div style="font-size:10px; color:var(--secondary); text-transform:uppercase; letter-spacing:1px; margin-top:2px;">Check-ins</div>
+      </div>
+      <div style="padding:16px; text-align:center; border-right:1px solid var(--border);">
+        <div style="font-size:22px; font-weight:800;">23</div>
+        <div style="font-size:10px; color:var(--secondary); text-transform:uppercase; letter-spacing:1px; margin-top:2px;">Conversations</div>
+      </div>
+      <div style="padding:16px; text-align:center; border-right:1px solid var(--border);">
+        <div style="font-size:22px; font-weight:800;">3</div>
+        <div style="font-size:10px; color:var(--secondary); text-transform:uppercase; letter-spacing:1px; margin-top:2px;">Captures</div>
+      </div>
+      <div style="padding:16px; text-align:center;">
+        <div style="font-size:22px; font-weight:800; color:var(--gold);">1,284</div>
+        <div style="font-size:10px; color:var(--secondary); text-transform:uppercase; letter-spacing:1px; margin-top:2px;">Vectors</div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:16px;">
+
+      <!-- Patterns -->
+      <div class="card">
+        <div class="label" style="margin-bottom:14px;">Patterns KJ Has Found</div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+            <div style="font-size:13px; line-height:1.4; flex:1;">Financial stress correlates with physical withdrawal in conversations</div>
+            <span style="font-size:11px; color:var(--gold); font-weight:600; white-space:nowrap;">94% confidence</span>
+          </div>
+          <div style="height:1px; background:var(--border);"></div>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+            <div style="font-size:13px; line-height:1.4; flex:1;">Thursday is consistently your highest-score day of the week</div>
+            <span style="font-size:11px; color:var(--gold); font-weight:600; white-space:nowrap;">88% confidence</span>
+          </div>
+          <div style="height:1px; background:var(--border);"></div>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+            <div style="font-size:13px; line-height:1.4; flex:1;">HRV above 55ms predicts a high K0RE Score day</div>
+            <span style="font-size:11px; color:var(--gold); font-weight:600; white-space:nowrap;">82% confidence</span>
+          </div>
+          <div style="height:1px; background:var(--border);"></div>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+            <div style="font-size:13px; line-height:1.4; flex:1;">You check in more honestly after physical exercise</div>
+            <span style="font-size:11px; color:var(--gold); font-weight:600; white-space:nowrap;">76% confidence</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Beliefs & Preferences -->
+      <div class="card">
+        <div class="label" style="margin-bottom:14px;">Beliefs & Preferences</div>
+        <div style="display:flex; flex-wrap:wrap; margin:-3px;">
+          <span class="tag tag-gold">Values autonomy</span>
+          <span class="tag tag-gold">Peak performance: morning</span>
+          <span class="tag">Competitive by nature</span>
+          <span class="tag tag-gold">Stress trigger: financial uncertainty</span>
+          <span class="tag">Dislikes vague feedback</span>
+          <span class="tag">Motivated by legacy</span>
+          <span class="tag tag-gold">Strategic thinker</span>
+          <span class="tag">Responds well to direct communication</span>
+          <span class="tag">Deal-focused mindset</span>
+          <span class="tag tag-gold">Trust built through competence</span>
+        </div>
+      </div>
+
+      <!-- Recent Context -->
+      <div class="card">
+        <div class="label" style="margin-bottom:14px;">Recent Context</div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:12px;">
+            <div style="font-size:11px; color:var(--secondary); margin-bottom:4px;">Today, 8:02 AM · Chat with KJ</div>
+            <div style="font-size:13px; line-height:1.4;">Discussed 2759 Kingston Rd deal status. 3 blockers logged. Financial score concern flagged.</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:12px;">
+            <div style="font-size:11px; color:var(--secondary); margin-bottom:4px;">Yesterday, 2:30 PM · MeetingEye — Zoom with Marco</div>
+            <div style="font-size:13px; line-height:1.4;">Cash flow tension detected twice. Marco aligned on deal timeline. Energy dropped at 32-min mark.</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:12px;">
+            <div style="font-size:11px; color:var(--secondary); margin-bottom:4px;">Feb 28, 7:14 AM · Morning Check-In</div>
+            <div style="font-size:13px; line-height:1.4;">Slept 7h 23min. HRV 52. Physical feeling strong. Financial anxiety mentioned — Kingston deal pressure.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Rights -->
+      <div class="card" style="border-color:rgba(239,68,68,0.2);">
+        <div class="label" style="margin-bottom:14px; color:var(--danger);">Your Data Rights</div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-ghost btn-sm">📤 Export All</button>
+          <button class="btn btn-ghost btn-sm">✏️ Edit Memory</button>
+          <button class="btn btn-ghost btn-sm">🗑️ Delete Entry</button>
+          <button class="btn btn-danger btn-sm" style="margin-left:auto;">💥 Full Wipe</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ===================================================
+     SCREEN 09: WEARABLE INTEGRATION
+     =================================================== -->
+<div class="screen" id="screen-8">
+  <div style="padding:32px 24px; max-width:800px; margin:0 auto;">
+
+    <div style="margin-bottom:28px;">
+      <div style="font-size:11px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;">Portal · /wearables</div>
+      <h1 style="font-size:26px; font-weight:800; margin-bottom:6px;">Wearable Intelligence</h1>
+      <p style="color:var(--secondary); font-size:15px;">Physical domain data — automatically.</p>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:16px;">
+
+      <!-- Devices -->
+      <div>
+        <div class="label" style="margin-bottom:12px;">Connected Devices</div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+
+          <!-- Apple Watch — Connected -->
+          <div class="card" style="border-color:var(--success);">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+              <div style="font-size:32px;">⌚</div>
+              <div>
+                <div style="font-weight:600; font-size:15px;">Apple Watch</div>
+                <div style="font-size:12px; color:var(--success);">✅ Connected · Last sync 6 min ago</div>
+              </div>
+              <span class="badge badge-success" style="margin-left:auto;">Live</span>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px;">
+              <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:10px; text-align:center;">
+                <div style="font-size:16px; font-weight:700; color:var(--blue);">52ms</div>
+                <div style="font-size:10px; color:var(--secondary); margin-top:2px;">HRV</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:10px; text-align:center;">
+                <div style="font-size:16px; font-weight:700; color:var(--success);">58<span style="font-size:12px;">bpm</span></div>
+                <div style="font-size:10px; color:var(--secondary); margin-top:2px;">Resting HR</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:10px; text-align:center;">
+                <div style="font-size:16px; font-weight:700; color:var(--purple);">7h 23m</div>
+                <div style="font-size:10px; color:var(--secondary); margin-top:2px;">Sleep</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:10px; text-align:center;">
+                <div style="font-size:16px; font-weight:700; color:var(--orange);">4,821</div>
+                <div style="font-size:10px; color:var(--secondary); margin-top:2px;">Steps</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Whoop — not connected -->
+          <div class="card" style="opacity:0.7;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <div style="width:48px; height:48px; background:rgba(255,255,255,0.05); border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:800; color:var(--secondary);">W</div>
+              <div style="flex:1;">
+                <div style="font-weight:600; font-size:15px;">Whoop</div>
+                <div style="font-size:12px; color:var(--secondary);">Not connected</div>
+              </div>
+              <button class="btn btn-outline btn-sm">Connect Whoop</button>
+            </div>
+          </div>
+
+          <!-- Oura — not connected -->
+          <div class="card" style="opacity:0.7;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <div style="width:48px; height:48px; background:rgba(255,255,255,0.05); border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:800; color:var(--secondary);">O</div>
+              <div style="flex:1;">
+                <div style="font-weight:600; font-size:15px;">Oura Ring</div>
+                <div style="font-size:12px; color:var(--secondary);">Not connected</div>
+              </div>
+              <button class="btn btn-outline btn-sm">Connect Oura</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Score Impact -->
+      <div class="card" style="border-color:var(--border-gold);">
+        <div class="label" style="margin-bottom:14px; color:var(--gold);">K0RE Score Impact Today</div>
+
+        <div style="display:flex; align-items:center; gap:16px; margin-bottom:16px;">
+          <div style="position:relative; width:72px; height:72px; border-radius:50%; background:conic-gradient(var(--orange) 0deg 281deg, rgba(255,255,255,0.06) 281deg 360deg); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <div style="width:56px; height:56px; border-radius:50%; background:var(--card); display:flex; flex-direction:column; align-items:center; justify-content:center;">
+              <div style="font-size:16px; font-weight:800; color:var(--orange);">7.8</div>
+              <div style="font-size:8px; color:var(--secondary);">Physical</div>
+            </div>
+          </div>
+          <div style="font-size:13px; color:var(--secondary); line-height:1.5;">
+            Your physical score today: <strong style="color:var(--white);">7.8/10</strong><br>
+            Automatically calculated from wearable data
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:16px;">
+          <div style="display:flex; gap:8px; font-size:13px;">
+            <span style="color:var(--success);">●</span>
+            <span>Sleep quality: <strong>7h 23min</strong> deep sleep <span style="color:var(--success);">↑ above avg</span></span>
+          </div>
+          <div style="display:flex; gap:8px; font-size:13px;">
+            <span style="color:var(--success);">●</span>
+            <span>HRV: <strong>52ms</strong> <span style="color:var(--success);">(above your baseline of 47ms)</span></span>
+          </div>
+          <div style="display:flex; gap:8px; font-size:13px;">
+            <span style="color:var(--success);">●</span>
+            <span>Resting HR: <strong>58bpm</strong> <span style="color:var(--success);">(optimal)</span></span>
+          </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:14px; border-left:3px solid var(--gold);">
+          <div style="font-size:11px; color:var(--gold); font-weight:600; margin-bottom:6px;">KJ INSIGHT</div>
+          <div style="font-size:13px; line-height:1.5; color:var(--secondary);">
+            "Your K0RE Score peaks on days when HRV is above 55ms. Last Tuesday was your best day — <strong style="color:var(--white);">8.4 score</strong>. Today is close. Protect your physical routine — it's your anchor."
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ===================================================
+     SCREEN 10: K0RE NETWORK
+     =================================================== -->
+<div class="screen" id="screen-9">
+  <div style="padding:32px 24px; max-width:900px; margin:0 auto;">
+
+    <!-- Header -->
+    <div style="text-align:center; margin-bottom:12px;">
+      <div style="font-size:11px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:12px;">Community</div>
+      <h1 style="font-size:32px; font-weight:800; margin-bottom:8px;">K0RE Network</h1>
+      <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(212,175,55,0.1); border:1px solid var(--border-gold); border-radius:8px; padding:6px 14px; margin-bottom:12px;">
+        <span style="color:var(--gold); font-size:12px; font-weight:700; letter-spacing:1px;">🔒 COMING SOON — Available at 500 members</span>
+      </div>
+      <p style="color:var(--secondary); font-size:15px; max-width:500px; margin:0 auto;">Not just chat. Context-aware collective intelligence — where KJ participates in the conversation.</p>
+    </div>
+
+    <!-- Progress to launch -->
+    <div class="card" style="max-width:460px; margin:20px auto 28px; text-align:center;">
+      <div style="font-size:13px; color:var(--secondary); margin-bottom:8px;">Members until launch</div>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:6px;">
+        <div style="flex:1; height:8px; background:rgba(255,255,255,0.06); border-radius:4px; overflow:hidden;">
+          <div style="height:100%; width:9.4%; background:var(--gold); border-radius:4px;"></div>
+        </div>
+        <span style="font-size:13px; font-weight:600; color:var(--gold);">47/500</span>
+      </div>
+      <div style="font-size:12px; color:var(--secondary);">453 spots remaining</div>
+    </div>
+
+    <!-- Preview Area -->
+    <div style="position:relative; border-radius:16px; overflow:hidden; border:1px solid var(--border);">
+
+      <!-- Blur overlay -->
+      <div style="position:absolute; inset:0; background:rgba(5,5,5,0.6); z-index:10; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(2px); border-radius:16px;">
+        <div style="text-align:center;">
+          <div style="font-size:36px; margin-bottom:12px;">🔒</div>
+          <div style="font-size:16px; font-weight:700; margin-bottom:6px;">Preview Mode</div>
+          <div style="font-size:13px; color:var(--secondary); max-width:280px; margin:0 auto 20px;">Join the waitlist to be notified when K0RE Network launches</div>
+          <button class="btn btn-gold" style="padding:12px 32px; font-size:14px;">Join Waitlist →</button>
+        </div>
+      </div>
+
+      <!-- Actual preview (blurred under overlay) -->
+      <div style="display:grid; grid-template-columns:220px 1fr; height:380px; filter:blur(1px); opacity:0.4;">
+
+        <!-- Sidebar -->
+        <div style="background:#0d0d0f; border-right:1px solid var(--border); padding:16px 0;">
+          <div style="padding:0 12px 12px; border-bottom:1px solid var(--border); margin-bottom:8px;">
+            <div style="font-size:13px; font-weight:700;">K0RE Network</div>
+            <div style="font-size:10px; color:var(--secondary);">47 members · FOUNDERS CIRCLE</div>
+          </div>
+          <div style="padding:0 8px;">
+            <div style="font-size:9px; color:var(--secondary); letter-spacing:1.5px; text-transform:uppercase; padding:6px 8px 4px;">Channels</div>
+            <div style="padding:8px 10px; border-radius:6px; background:var(--gold-dim); font-size:13px; color:var(--gold); margin-bottom:2px;"># founders-circle 🔒</div>
+            <div style="padding:8px 10px; border-radius:6px; font-size:13px; color:var(--secondary); margin-bottom:2px;"># high-performers</div>
+            <div style="padding:8px 10px; border-radius:6px; font-size:13px; color:var(--secondary); margin-bottom:2px;"># trmig-deals</div>
+            <div style="padding:8px 10px; border-radius:6px; font-size:13px; color:var(--secondary); margin-bottom:2px;"># sot-experiences</div>
+            <div style="padding:8px 10px; border-radius:6px; font-size:13px; color:var(--secondary);"># accountability</div>
+          </div>
+        </div>
+
+        <!-- Chat preview -->
+        <div style="padding:16px; display:flex; flex-direction:column; gap:12px; overflow:hidden;">
+          <div style="display:flex; gap:10px; align-items:flex-start;">
+            <div style="width:32px; height:32px; background:#333; border-radius:50%;"></div>
+            <div>
+              <div style="font-size:12px; font-weight:600;">Marcus T. <span style="color:var(--gold); font-size:10px;">K0RE 81</span></div>
+              <div style="font-size:13px; color:var(--secondary); margin-top:3px;">Anyone else seeing their financial score bounce after implementing the Sunday planning protocol?</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:10px; align-items:flex-start;">
+            <div style="width:32px; height:32px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#000;">KJ</div>
+            <div>
+              <div style="font-size:12px; font-weight:600; color:var(--gold);">KJ <span style="color:var(--secondary); font-size:10px;">Intelligence Agent</span></div>
+              <div style="font-size:13px; color:var(--secondary); margin-top:3px;">@Marcus — 6 members who implemented Sunday planning saw avg +4.2pt financial score lift in 2 weeks. Here's the pattern…</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:10px; align-items:flex-start;">
+            <div style="width:32px; height:32px; background:#555; border-radius:50%;"></div>
+            <div>
+              <div style="font-size:12px; font-weight:600;">Devon A. <span style="color:var(--gold); font-size:10px;">K0RE 74</span></div>
+              <div style="font-size:13px; color:var(--secondary); margin-top:3px;">Yes. Game changer. Took 3 weeks to see it.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ===================================================
+     SCREEN 11: ADMIN MISSION CONTROL
+     =================================================== -->
+<div class="screen" id="screen-10">
+  <div class="admin-layout">
+
+    <!-- Sidebar -->
+    <div class="admin-sidebar">
+      <div class="admin-sidebar-logo">
+        <div class="k0re">K0RE</div>
+        <div class="sub">ADMIN CONTROL</div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Command</div>
+        <div class="sidebar-item active">⚡ Mission Control</div>
+        <div class="sidebar-item">🤖 Agent Monitor</div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Users</div>
+        <div class="sidebar-item">👥 User Management</div>
+        <div class="sidebar-item">💰 Revenue</div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Intelligence</div>
+        <div class="sidebar-item">🧠 Memory Dashboard</div>
+        <div class="sidebar-item">📊 Analytics</div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">System</div>
+        <div class="sidebar-item">🛡️ Security Audit</div>
+        <div class="sidebar-item">📋 Activity Log</div>
+        <div class="sidebar-item">📚 Library</div>
+        <div class="sidebar-item">🧪 Sandbox</div>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="admin-main">
+      <div style="margin-bottom:20px;">
+        <h1 style="font-size:20px; font-weight:700;">Mission Control</h1>
+        <div style="font-size:12px; color:var(--secondary);">Mon, Mar 2 · 11:47 AM · All systems operational</div>
+      </div>
+
+      <!-- Stats Bar -->
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px;">
+        <div class="card card-sm" style="text-align:center;">
+          <div style="font-size:22px; font-weight:800; color:var(--white);">47</div>
+          <div style="font-size:10px; color:var(--secondary); text-transform:uppercase; letter-spacing:1px;">Users</div>
+        </div>
+        <div class="card card-sm" style="text-align:center;">
+          <div style="font-size:22px; font-weight:800; color:var(--success);">12</div>
+          <div style="font-size:10px; color:var(--secondary); text-transform:uppercase; letter-spacing:1px;">Active Today</div>
+        </div>
+        <div class="card card-sm" style="text-align:center;">
+          <div style="font-size:22px; font-weight:800; color:var(--gold);">$2,300</div>
+          <div style="font-size:10px; color:var(--secondary); text-transform:uppercase; letter-spacing:1px;">MRR</div>
+        </div>
+        <div class="card card-sm" style="text-align:center;">
+          <div style="font-size:16px; font-weight:700; color:var(--success);">✅ CLEAN</div>
+          <div style="font-size:10px; color:var(--secondary); text-transform:uppercase; letter-spacing:1px;">Security</div>
+        </div>
+      </div>
+
+      <!-- Agent Status Row -->
+      <div style="margin-bottom:20px;">
+        <div class="label" style="margin-bottom:12px;">Agent Status</div>
+        <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:10px;">
+          <div class="card card-sm" style="text-align:center; border-color:rgba(255,255,255,0.2);">
+            <div style="font-size:11px; font-weight:700; letter-spacing:1px; margin-bottom:6px;">KJ</div>
+            <span class="badge badge-success">● ACTIVE</span>
+          </div>
+          <div class="card card-sm" style="text-align:center; border-color:rgba(59,130,246,0.3);">
+            <div style="font-size:11px; font-weight:700; letter-spacing:1px; margin-bottom:6px; color:var(--blue);">CLAWD</div>
+            <span class="badge badge-blue">● ACTIVE</span>
+          </div>
+          <div class="card card-sm" style="text-align:center; border-color:rgba(239,68,68,0.3);">
+            <div style="font-size:11px; font-weight:700; letter-spacing:1px; margin-bottom:6px; color:var(--danger);">SENTINEL</div>
+            <span class="badge badge-danger">● ACTIVE</span>
+          </div>
+          <div class="card card-sm" style="text-align:center; border-color:rgba(139,92,246,0.2); opacity:0.7;">
+            <div style="font-size:11px; font-weight:700; letter-spacing:1px; margin-bottom:6px; color:var(--purple);">TRENDY</div>
+            <span class="badge badge-purple">◌ IDLE</span>
+          </div>
+          <div class="card card-sm" style="text-align:center; border-color:rgba(245,158,11,0.2); opacity:0.7;">
+            <div style="font-size:11px; font-weight:700; letter-spacing:1px; margin-bottom:6px; color:var(--orange);">SCRIBE</div>
+            <span class="badge" style="background:rgba(245,158,11,0.15); color:var(--orange);">◌ IDLE</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dispatch Panel -->
+      <div class="card" style="margin-bottom:20px;">
+        <div class="label" style="margin-bottom:12px;">Dispatch</div>
+        <input type="text" placeholder="Dispatch a command to KJ..." style="margin-bottom:12px;">
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-gold btn-sm">⚡ T1 Auto-Execute</button>
+          <button class="btn btn-outline btn-sm">📥 T2 Queue for Jason</button>
+          <button class="btn btn-outline btn-sm">📨 T3 Submit to Cal</button>
+        </div>
+      </div>
+
+      <!-- Task Feed Table -->
+      <div class="card">
+        <div class="label" style="margin-bottom:14px;">Task Feed</div>
+
+        <div class="table-row table-header" style="grid-template-columns:3fr 80px 90px 60px 80px;">
+          <span>Task</span><span>Agent</span><span>Status</span><span>Tier</span><span>Time</span>
+        </div>
+
+        <div class="table-row" style="grid-template-columns:3fr 80px 90px 60px 80px;">
+          <span style="font-size:13px;">Flag permit blockers — 2759 Kingston Rd</span>
+          <span><span class="badge badge-blue" style="font-size:10px;">CLAWD</span></span>
+          <span><span class="badge badge-success" style="font-size:10px;">Complete</span></span>
+          <span style="font-size:12px; color:var(--secondary);">T1</span>
+          <span style="font-size:12px; color:var(--secondary);">2m ago</span>
+        </div>
+        <div class="table-row" style="grid-template-columns:3fr 80px 90px 60px 80px;">
+          <span style="font-size:13px;">Weekly K0RE analysis — Jason</span>
+          <span><span class="badge badge-gold" style="font-size:10px;">KJ</span></span>
+          <span><span class="badge badge-success" style="font-size:10px;">Complete</span></span>
+          <span style="font-size:12px; color:var(--secondary);">T1</span>
+          <span style="font-size:12px; color:var(--secondary);">8m ago</span>
+        </div>
+        <div class="table-row" style="grid-template-columns:3fr 80px 90px 60px 80px;">
+          <span style="font-size:13px;">MeetingEye report — Zoom w/ Marco</span>
+          <span><span class="badge badge-gold" style="font-size:10px;">KJ</span></span>
+          <span><span class="badge badge-success" style="font-size:10px;">Complete</span></span>
+          <span style="font-size:12px; color:var(--secondary);">T2</span>
+          <span style="font-size:12px; color:var(--secondary);">2h ago</span>
+        </div>
+        <div class="table-row" style="grid-template-columns:3fr 80px 90px 60px 80px;">
+          <span style="font-size:13px;">TRMIG deal status sweep — all active deals</span>
+          <span><span class="badge badge-blue" style="font-size:10px;">CLAWD</span></span>
+          <span><span class="badge" style="background:rgba(245,158,11,0.15); color:var(--orange); font-size:10px;">Running</span></span>
+          <span style="font-size:12px; color:var(--secondary);">T1</span>
+          <span style="font-size:12px; color:var(--secondary);">Now</span>
+        </div>
+        <div class="table-row" style="grid-template-columns:3fr 80px 90px 60px 80px;">
+          <span style="font-size:13px;">Security audit — user access review</span>
+          <span><span class="badge badge-danger" style="font-size:10px;">SENTINEL</span></span>
+          <span><span class="badge badge-success" style="font-size:10px;">Clean</span></span>
+          <span style="font-size:12px; color:var(--secondary);">T1</span>
+          <span style="font-size:12px; color:var(--secondary);">1h ago</span>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ===================================================
+     SCREEN 12: ADMIN MEMORY DASHBOARD
+     =================================================== -->
+<div class="screen" id="screen-11">
+  <div class="admin-layout">
+
+    <!-- Sidebar (same) -->
+    <div class="admin-sidebar">
+      <div class="admin-sidebar-logo">
+        <div class="k0re">K0RE</div>
+        <div class="sub">ADMIN CONTROL</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Command</div>
+        <div class="sidebar-item">⚡ Mission Control</div>
+        <div class="sidebar-item">🤖 Agent Monitor</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Users</div>
+        <div class="sidebar-item">👥 User Management</div>
+        <div class="sidebar-item">💰 Revenue</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Intelligence</div>
+        <div class="sidebar-item active">🧠 Memory Dashboard</div>
+        <div class="sidebar-item">📊 Analytics</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">System</div>
+        <div class="sidebar-item">🛡️ Security Audit</div>
+        <div class="sidebar-item">📋 Activity Log</div>
+        <div class="sidebar-item">📚 Library</div>
+        <div class="sidebar-item">🧪 Sandbox</div>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="admin-main">
+      <div style="margin-bottom:20px;">
+        <h1 style="font-size:20px; font-weight:700;">Collective Intelligence</h1>
+        <div style="font-size:12px; color:var(--secondary);">Aggregate memory patterns across all K0RE users</div>
+      </div>
+
+      <!-- Stats -->
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px;">
+        <div class="card card-sm" style="text-align:center;">
+          <div style="font-size:22px; font-weight:800;">47</div>
+          <div style="font-size:10px; color:var(--secondary); text-transform:uppercase; letter-spacing:1px;">Users</div>
+        </div>
+        <div class="card card-sm" style="text-align:center;">
+          <div style="font-size:22px; font-weight:800; color:var(--gold);">1,284</div>
+          <div style="font-size:10px; color:var(--secondary); text-transform:uppercase; letter-spacing:1px;">Check-ins Embedded</div>
+        </div>
+        <div class="card card-sm" style="text-align:center;">
+          <div style="font-size:22px; font-weight:800; color:var(--blue);">23,847</div>
+          <div style="font-size:10px; color:var(--secondary); text-transform:uppercase; letter-spacing:1px;">Total Vectors</div>
+        </div>
+        <div class="card card-sm" style="text-align:center; border-color:rgba(16,185,129,0.3);">
+          <div style="font-size:16px; font-weight:700; color:var(--success);">4 min ago</div>
+          <div style="font-size:10px; color:var(--secondary); text-transform:uppercase; letter-spacing:1px;">Last Updated</div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+
+        <!-- Top Patterns -->
+        <div class="card">
+          <div class="label" style="margin-bottom:14px;">Top Patterns Across Users</div>
+
+          <div class="bar-chart-bar">
+            <div class="bar-chart-label">Financial domain lowest avg</div>
+            <div class="bar-chart-track"><div class="bar-chart-fill" style="width:89%; background:var(--danger);"></div></div>
+            <div class="bar-chart-pct">89%</div>
+          </div>
+          <div class="bar-chart-bar">
+            <div class="bar-chart-label">Physical improves mental +1.8pts</div>
+            <div class="bar-chart-track"><div class="bar-chart-fill" style="width:76%; background:var(--orange);"></div></div>
+            <div class="bar-chart-pct">76%</div>
+          </div>
+          <div class="bar-chart-bar">
+            <div class="bar-chart-label">Monday check-ins most consistent</div>
+            <div class="bar-chart-track"><div class="bar-chart-fill" style="width:71%; background:var(--blue);"></div></div>
+            <div class="bar-chart-pct">71%</div>
+          </div>
+          <div class="bar-chart-bar">
+            <div class="bar-chart-label">Morning HRV predicts score accuracy</div>
+            <div class="bar-chart-track"><div class="bar-chart-fill" style="width:64%; background:var(--purple);"></div></div>
+            <div class="bar-chart-pct">64%</div>
+          </div>
+        </div>
+
+        <!-- Weekly Vector Growth -->
+        <div class="card">
+          <div class="label" style="margin-bottom:14px;">Weekly Vector Growth</div>
+          <div style="display:flex; align-items:flex-end; gap:8px; height:100px;">
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <div style="background:var(--gold); opacity:0.6; border-radius:3px 3px 0 0; width:100%; height:45px;"></div>
+              <div style="font-size:9px; color:var(--secondary);">Mon</div>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <div style="background:var(--gold); opacity:0.6; border-radius:3px 3px 0 0; width:100%; height:60px;"></div>
+              <div style="font-size:9px; color:var(--secondary);">Tue</div>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <div style="background:var(--gold); opacity:0.6; border-radius:3px 3px 0 0; width:100%; height:38px;"></div>
+              <div style="font-size:9px; color:var(--secondary);">Wed</div>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <div style="background:var(--gold); opacity:0.6; border-radius:3px 3px 0 0; width:100%; height:75px;"></div>
+              <div style="font-size:9px; color:var(--secondary);">Thu</div>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <div style="background:var(--gold); opacity:0.6; border-radius:3px 3px 0 0; width:100%; height:52px;"></div>
+              <div style="font-size:9px; color:var(--secondary);">Fri</div>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <div style="background:var(--gold); opacity:0.3; border-radius:3px 3px 0 0; width:100%; height:28px;"></div>
+              <div style="font-size:9px; color:var(--secondary);">Sat</div>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <div style="background:var(--gold); opacity:0.8; border-radius:3px 3px 0 0; width:100%; height:88px;"></div>
+              <div style="font-size:9px; color:var(--secondary);">Sun</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Intelligence Search -->
+      <div class="card">
+        <div class="label" style="margin-bottom:12px;">User Intelligence Search</div>
+        <div style="display:flex; gap:10px; margin-bottom:16px;">
+          <input type="text" placeholder="Search users by name, score, domain..." style="flex:1;">
+          <button class="btn btn-gold btn-sm">Search</button>
+        </div>
+
+        <!-- Sample user card -->
+        <div style="background:rgba(255,255,255,0.03); border-radius:10px; padding:16px; border:1px solid var(--border); display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+          <div style="width:40px; height:40px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; color:#000;">JJ</div>
+          <div style="flex:1;">
+            <div style="font-weight:600; font-size:14px;">Jason Allen John</div>
+            <div style="font-size:12px; color:var(--secondary);">47 check-ins · Last active: today</div>
+          </div>
+          <div style="display:flex; gap:16px; flex-wrap:wrap;">
+            <div style="text-align:center;">
+              <div style="font-size:18px; font-weight:700; color:var(--gold);">72</div>
+              <div style="font-size:10px; color:var(--secondary);">K0RE Score</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-size:18px; font-weight:700; color:var(--danger);">4.1</div>
+              <div style="font-size:10px; color:var(--secondary);">Lowest Domain</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-size:18px; font-weight:700; color:var(--success);">8.2</div>
+              <div style="font-size:10px; color:var(--secondary);">Coherence</div>
+            </div>
+          </div>
+          <button class="btn btn-ghost btn-sm">View Intel →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ===================================================
+     SCREEN 13: MOBILE APPS
+     =================================================== -->
+<div class="screen" id="screen-12">
+  <div style="padding:32px 24px; max-width:1100px; margin:0 auto;">
+
+    <div style="margin-bottom:28px;">
+      <div style="font-size:11px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;">Mobile</div>
+      <h1 style="font-size:26px; font-weight:800; margin-bottom:6px;">Mobile Experience</h1>
+      <p style="color:var(--secondary); font-size:14px;">Customer app (iOS/Android) + Admin PWA</p>
+    </div>
+
+    <!-- 13A: Customer Mobile + 13B: Admin PWA -->
+    <div style="display:flex; gap:40px; align-items:flex-start; flex-wrap:wrap; justify-content:center;">
+
+      <!-- Phone 1: Customer Home -->
+      <div style="text-align:center;">
+        <div style="font-size:11px; color:var(--secondary); letter-spacing:1px; text-transform:uppercase; margin-bottom:12px;">Customer — Home Tab</div>
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-content" style="padding:40px 12px 70px;">
+
+            <!-- Score Ring -->
+            <div style="text-align:center; padding:16px 0 12px;">
+              <div style="position:relative; width:80px; height:80px; margin:0 auto; border-radius:50%; background:conic-gradient(var(--gold) 0deg 259deg, rgba(255,255,255,0.06) 259deg 360deg); display:flex; align-items:center; justify-content:center;">
+                <div style="width:62px; height:62px; border-radius:50%; background:#0a0a0a; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                  <div style="font-size:20px; font-weight:800; color:var(--gold);">72</div>
+                  <div style="font-size:8px; color:var(--secondary);">K0RE</div>
+                </div>
+              </div>
+              <div style="font-size:11px; color:var(--success); margin-top:6px;">↑ +8 this month</div>
+            </div>
+
+            <!-- Domain Bars -->
+            <div style="padding:0 4px; margin-bottom:12px;">
+              <div style="font-size:9px; color:var(--secondary); letter-spacing:1px; text-transform:uppercase; margin-bottom:8px;">Domains</div>
+              <div style="display:flex; flex-direction:column; gap:7px;">
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span style="font-size:9px; color:var(--secondary); width:56px;">Mental</span>
+                  <div style="flex:1; height:5px; background:rgba(255,255,255,0.06); border-radius:3px;">
+                    <div style="width:72%; height:100%; background:#3B82F6; border-radius:3px;"></div>
+                  </div>
+                  <span style="font-size:9px; color:var(--white); width:20px;">7.2</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span style="font-size:9px; color:var(--secondary); width:56px;">Emotional</span>
+                  <div style="flex:1; height:5px; background:rgba(255,255,255,0.06); border-radius:3px;">
+                    <div style="width:78%; height:100%; background:#10B981; border-radius:3px;"></div>
+                  </div>
+                  <span style="font-size:9px; color:var(--white); width:20px;">7.8</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span style="font-size:9px; color:var(--secondary); width:56px;">Physical</span>
+                  <div style="flex:1; height:5px; background:rgba(255,255,255,0.06); border-radius:3px;">
+                    <div style="width:82%; height:100%; background:#F59E0B; border-radius:3px;"></div>
+                  </div>
+                  <span style="font-size:9px; color:var(--white); width:20px;">8.2</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span style="font-size:9px; color:var(--secondary); width:56px;">Spiritual</span>
+                  <div style="flex:1; height:5px; background:rgba(255,255,255,0.06); border-radius:3px;">
+                    <div style="width:75%; height:100%; background:#8B5CF6; border-radius:3px;"></div>
+                  </div>
+                  <span style="font-size:9px; color:var(--white); width:20px;">7.5</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span style="font-size:9px; color:var(--secondary); width:56px;">Financial</span>
+                  <div style="flex:1; height:5px; background:rgba(255,255,255,0.06); border-radius:3px;">
+                    <div style="width:41%; height:100%; background:#EF4444; border-radius:3px;"></div>
+                  </div>
+                  <span style="font-size:9px; color:var(--danger); width:20px;">4.1</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Check-in CTA -->
+            <div style="background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.3); border-radius:10px; padding:12px; margin:0 4px; text-align:center;">
+              <div style="font-size:12px; font-weight:600; margin-bottom:4px;">Check in with KJ</div>
+              <div style="font-size:10px; color:var(--secondary); margin-bottom:8px;">Takes 2 minutes</div>
+              <button class="btn btn-gold" style="font-size:11px; padding:7px 20px; border-radius:6px; width:100%;">Check In Now</button>
+            </div>
+
+            <!-- KJ insight pill -->
+            <div style="margin:10px 4px 0; background:rgba(255,255,255,0.04); border-radius:8px; padding:10px; border:1px solid var(--border);">
+              <div style="font-size:9px; color:var(--gold); font-weight:700; letter-spacing:1px; margin-bottom:3px;">KJ</div>
+              <div style="font-size:11px; color:var(--secondary); line-height:1.4;">Financial domain flagged 4 days. Tap to discuss.</div>
+            </div>
+
+          </div>
+          <!-- Bottom Tabs -->
+          <div class="phone-bottom-tabs">
+            <div class="phone-tab active"><div class="phone-tab-icon">🏠</div><span>Home</span></div>
+            <div class="phone-tab"><div class="phone-tab-icon">➕</div><span>Capture</span></div>
+            <div class="phone-tab"><div class="phone-tab-icon">💬</div><span>KJ</span></div>
+            <div class="phone-tab"><div class="phone-tab-icon">📚</div><span>Library</span></div>
+            <div class="phone-tab"><div class="phone-tab-icon">👤</div><span>Profile</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone 2: KJ Voice Tab -->
+      <div style="text-align:center;">
+        <div style="font-size:11px; color:var(--secondary); letter-spacing:1px; text-transform:uppercase; margin-bottom:12px;">Customer — KJ Voice Tab</div>
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-content" style="padding:40px 12px 70px; display:flex; flex-direction:column;">
+
+            <!-- Top bar -->
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 4px 0; margin-bottom:16px;">
+              <div>
+                <div style="font-size:13px; font-weight:700;">KJ Voice</div>
+                <div style="font-size:9px; color:var(--secondary);">47 check-ins · live</div>
+              </div>
+              <span style="font-size:18px; cursor:pointer;">📷</span>
+            </div>
+
+            <!-- Transcript snippet -->
+            <div style="background:rgba(255,255,255,0.04); border-radius:10px; padding:12px; margin:0 4px 16px; border:1px solid var(--border);">
+              <div style="font-size:9px; color:var(--gold); letter-spacing:1px; text-transform:uppercase; margin-bottom:6px;">Last Transcript</div>
+              <div style="font-size:11px; color:var(--secondary); line-height:1.5;">"...feeling good about the physical side but the Kingston deal is creating noise. Need to get the permits sorted before Marco's model..."</div>
+              <div style="font-size:9px; color:var(--secondary); margin-top:6px;">7:15 AM · Domains: Financial, Mental</div>
+            </div>
+
+            <!-- Waveform + Listening indicator -->
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px;">
+              <div style="font-size:13px; font-weight:600; color:var(--white);">KJ is listening...</div>
+
+              <div style="display:flex; justify-content:center;">
+                <div class="waveform">
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                  <div class="wave-bar"></div>
+                </div>
+              </div>
+
+              <!-- Mic Button -->
+              <div style="width:68px; height:68px; background:var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; box-shadow:0 0 0 8px rgba(212,175,55,0.15), 0 0 0 16px rgba(212,175,55,0.06); cursor:pointer;">🎙️</div>
+
+              <div style="font-size:10px; color:var(--secondary);">Tap to stop · KJ auto-analyzes</div>
+            </div>
+
+          </div>
+          <!-- Bottom Tabs -->
+          <div class="phone-bottom-tabs">
+            <div class="phone-tab"><div class="phone-tab-icon">🏠</div><span>Home</span></div>
+            <div class="phone-tab"><div class="phone-tab-icon">➕</div><span>Capture</span></div>
+            <div class="phone-tab active"><div class="phone-tab-icon">💬</div><span>KJ</span></div>
+            <div class="phone-tab"><div class="phone-tab-icon">📚</div><span>Library</span></div>
+            <div class="phone-tab"><div class="phone-tab-icon">👤</div><span>Profile</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone 3: Admin PWA -->
+      <div style="text-align:center;">
+        <div style="font-size:11px; color:var(--secondary); letter-spacing:1px; text-transform:uppercase; margin-bottom:12px;">Admin PWA — Control Tab</div>
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-content" style="padding:40px 12px 70px;">
+
+            <!-- Header -->
+            <div style="padding:8px 4px 12px; border-bottom:1px solid var(--border); margin-bottom:12px;">
+              <div style="font-size:12px; font-weight:700; color:var(--gold); letter-spacing:2px;">K0RE ADMIN</div>
+              <div style="font-size:9px; color:var(--secondary);">All systems operational</div>
+            </div>
+
+            <!-- Agent Mini Cards -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:0 2px 12px;">
+              <div style="background:var(--card); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:8px; text-align:center;">
+                <div style="font-size:11px; font-weight:700; margin-bottom:4px;">KJ</div>
+                <div style="font-size:9px; color:var(--success);">● ACTIVE</div>
+              </div>
+              <div style="background:var(--card); border:1px solid rgba(59,130,246,0.3); border-radius:8px; padding:8px; text-align:center;">
+                <div style="font-size:11px; font-weight:700; color:var(--blue); margin-bottom:4px;">CLAWD</div>
+                <div style="font-size:9px; color:var(--success);">● ACTIVE</div>
+              </div>
+              <div style="background:var(--card); border:1px solid rgba(239,68,68,0.3); border-radius:8px; padding:8px; text-align:center;">
+                <div style="font-size:11px; font-weight:700; color:var(--danger); margin-bottom:4px;">SENTINEL</div>
+                <div style="font-size:9px; color:var(--success);">● ACTIVE</div>
+              </div>
+              <div style="background:var(--card); border:1px solid rgba(139,92,246,0.2); border-radius:8px; padding:8px; text-align:center; opacity:0.7;">
+                <div style="font-size:11px; font-weight:700; color:var(--purple); margin-bottom:4px;">TRENDY</div>
+                <div style="font-size:9px; color:var(--secondary);">◌ IDLE</div>
+              </div>
+            </div>
+
+            <!-- Dispatch -->
+            <div style="margin:0 2px 12px;">
+              <input type="text" placeholder="Dispatch command..." style="font-size:11px; padding:8px 10px; margin-bottom:6px;">
+              <button class="btn btn-gold btn-full" style="font-size:11px; padding:8px;">⚡ Dispatch</button>
+            </div>
+
+            <!-- Recent Tasks -->
+            <div style="margin:0 2px;">
+              <div style="font-size:9px; color:var(--secondary); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Recent Tasks</div>
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <div style="background:var(--card); border-radius:8px; padding:8px 10px; border:1px solid var(--border);">
+                  <div style="font-size:11px; margin-bottom:3px;">Flag permit blockers — Kingston</div>
+                  <div style="display:flex; gap:6px; align-items:center;">
+                    <span style="font-size:9px; background:rgba(59,130,246,0.15); color:var(--blue); padding:1px 5px; border-radius:3px;">CLAWD</span>
+                    <span style="font-size:9px; color:var(--success);">✓ Done · 2m ago</span>
+                  </div>
+                </div>
+                <div style="background:var(--card); border-radius:8px; padding:8px 10px; border:1px solid var(--border);">
+                  <div style="font-size:11px; margin-bottom:3px;">Weekly K0RE analysis — Jason</div>
+                  <div style="display:flex; gap:6px; align-items:center;">
+                    <span style="font-size:9px; background:rgba(212,175,55,0.15); color:var(--gold); padding:1px 5px; border-radius:3px;">KJ</span>
+                    <span style="font-size:9px; color:var(--success);">✓ Done · 8m ago</span>
+                  </div>
+                </div>
+                <div style="background:var(--card); border-radius:8px; padding:8px 10px; border:1px solid var(--border);">
+                  <div style="font-size:11px; margin-bottom:3px;">TRMIG deal sweep — all deals</div>
+                  <div style="display:flex; gap:6px; align-items:center;">
+                    <span style="font-size:9px; background:rgba(59,130,246,0.15); color:var(--blue); padding:1px 5px; border-radius:3px;">CLAWD</span>
+                    <span style="font-size:9px; color:var(--orange);">⟳ Running</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <!-- Bottom Tabs -->
+          <div class="phone-bottom-tabs">
+            <div class="phone-tab active"><div class="phone-tab-icon">⚡</div><span>Control</span></div>
+            <div class="phone-tab"><div class="phone-tab-icon">👥</div><span>Users</span></div>
+            <div class="phone-tab"><div class="phone-tab-icon">🧠</div><span>Intel</span></div>
+            <div class="phone-tab"><div class="phone-tab-icon">🛡️</div><span>Security</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer note -->
+    <div style="text-align:center; margin-top:40px; padding:20px; border-top:1px solid var(--border);">
+      <div style="font-size:11px; color:var(--secondary);">K0RE Platform · Wireframes v2 · Built for sovereign performance · All screens, all flows</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+  function showScreen(index) {
+    document.querySelectorAll('.screen').forEach((s, i) => {
+      s.classList.toggle('active', i === index);
+    });
+    document.querySelectorAll('.nav-tab').forEach((t, i) => {
+      t.classList.toggle('active', i === index);
+    });
+    window.scrollTo(0, 0);
+  }
+
+  function showStep(index) {
+    for (let i = 0; i < 4; i++) {
+      const el = document.getElementById('onboard-step-' + i);
+      if (el) el.style.display = i === index ? 'block' : 'none';
+      const btn = document.getElementById('step-btn-' + i);
+      if (btn) {
+        btn.style.color = i === index ? 'var(--gold)' : '';
+        btn.style.opacity = i === index ? '1' : '0.5';
+      }
+    }
+  }
+</script>
+
+</body>
+</html>
