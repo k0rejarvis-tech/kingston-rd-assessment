@@ -2,450 +2,274 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kingston Rd — Stress Test Scenarios</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Kingston Rd — Stress Test</title>
   <style>
     :root {
       --gold: #C9A84C; --gold-light: #E2C97E; --gold-dim: rgba(201,168,76,0.15);
-      --bg: #0B0E13; --bg2: #111520; --bg3: #161B26; --card: #1A2030;
-      --border: rgba(255,255,255,0.07); --text: #E8EAF0; --muted: #7B8299;
+      --bg: #0B0E13; --card: #1A2030; --border: rgba(255,255,255,0.07);
+      --text: #E8EAF0; --muted: #7B8299;
       --green: #4CAF7D; --red: #E05C5C; --blue: #5B9CF6; --orange: #F0A04B;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(11,14,19,0.95); backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border); padding: 0 32px;
-      display: flex; align-items: center; justify-content: space-between; height: 56px;
-    }
-    .nav-brand { font-size: 13px; font-weight: 600; color: var(--gold); letter-spacing: 1px; }
-    .nav-badge { background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.3); color: var(--gold); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.5px; }
-    .nav-links a { color: var(--muted); text-decoration: none; font-size: 12px; margin-left: 24px; }
-    .nav-links a:hover { color: var(--text); }
-    section { padding: 48px 32px; border-bottom: 1px solid var(--border); max-width: 1200px; margin: 0 auto; }
-    .section-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
-    .section-title { font-size: clamp(20px, 3vw, 32px); font-weight: 700; color: #fff; margin-bottom: 8px; }
-    .section-desc { color: var(--muted); margin-bottom: 28px; max-width: 700px; }
-    .hero { background: linear-gradient(160deg, #0F1420 0%, var(--bg) 60%); border-bottom: 1px solid var(--border); padding: 64px 32px 48px; max-width: 100%; }
-    .hero h1 { font-size: clamp(28px, 4vw, 44px); font-weight: 700; color: #fff; line-height: 1.15; margin-bottom: 8px; }
-    .hero-sub { color: var(--muted); font-size: 14px; margin-bottom: 40px; }
-    .hero-sub span { color: var(--text); }
-    .amendments-bar {
-      display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 32px; padding: 20px 24px;
-      background: var(--card); border: 1px solid rgba(201,168,76,0.3); border-radius: 12px;
-    }
-    .amend-chip { display: flex; flex-direction: column; gap: 2px; }
-    .amend-label { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
-    .amend-val { font-size: 15px; font-weight: 700; color: var(--gold); }
-    .amend-from { font-size: 11px; color: var(--red); text-decoration: line-through; }
-    .vdivider { width: 1px; background: var(--border); align-self: stretch; }
-    .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
-    @media (max-width: 700px) { .cost-grid { grid-template-columns: 1fr; } }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
-    .card-title { font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
-    .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
-    .stat-row:last-child { border-bottom: none; }
-    .stat-key { color: var(--muted); }
-    .stat-val { font-weight: 600; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
+
+    /* NAV */
+    nav { background: rgba(11,14,19,0.97); border-bottom: 1px solid var(--border); padding: 0 16px; display: flex; align-items: center; justify-content: space-between; height: 48px; position: sticky; top: 0; z-index: 100; }
+    .nav-brand { font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 1px; }
+    .nav-back { color: var(--muted); text-decoration: none; font-size: 12px; }
+    .nav-badge { background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.3); color: var(--gold); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+
+    /* HERO */
+    .hero { padding: 28px 16px 20px; border-bottom: 1px solid var(--border); }
+    .hero-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    .hero h1 { font-size: 22px; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 6px; }
+    .hero-sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+
+    /* AMENDMENTS PILLS */
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
+    .pill { background: var(--card); border: 1px solid rgba(201,168,76,0.3); border-radius: 20px; padding: 4px 12px; font-size: 12px; }
+    .pill-label { color: var(--muted); font-size: 10px; }
+    .pill-old { color: var(--red); text-decoration: line-through; font-size: 11px; }
+    .pill-val { color: var(--gold); font-weight: 700; }
+
+    /* SECTIONS */
+    section { padding: 24px 16px; border-bottom: 1px solid var(--border); }
+    .sec-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+    .sec-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .sec-desc { color: var(--muted); font-size: 12px; margin-bottom: 16px; }
+
+    /* ALERT */
+    .alert { padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; font-size: 12px; line-height: 1.5; }
+    .alert-red { background: rgba(224,92,92,0.1); border: 1px solid rgba(224,92,92,0.3); color: #f0b0b0; }
+    .alert-gold { background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.3); color: var(--gold-light); }
+    .alert-blue { background: rgba(91,156,246,0.1); border: 1px solid rgba(91,156,246,0.3); color: #b0ccff; }
+    .alert strong { color: #fff; }
+
+    /* COST TABLE */
+    .cost-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 12px; }
+    .cost-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .cost-row:last-child { border-bottom: none; }
+    .cost-row.total { background: rgba(255,255,255,0.03); font-weight: 700; }
+    .cost-key { color: var(--muted); font-size: 12px; flex: 1; }
+    .cost-val { font-weight: 600; text-align: right; }
+    .cost-delta { color: var(--red); font-size: 11px; text-align: right; min-width: 70px; }
     .gold { color: var(--gold); }
     .red { color: var(--red); }
     .green { color: var(--green); }
     .blue { color: var(--blue); }
     .orange { color: var(--orange); }
-    .delta-up { color: var(--red); font-size: 11px; }
-    .scenario-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 32px; }
-    @media (max-width: 800px) { .scenario-grid { grid-template-columns: 1fr; } }
-    .scenario-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
-    .scenario-card.hi-ltv { border-color: rgba(240,160,75,0.4); }
-    .scenario-card.lo-ltv { border-color: rgba(224,92,92,0.3); }
-    .scenario-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
-    .scenario-ltv { font-size: 28px; font-weight: 800; }
-    .scenario-badge { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.5px; text-transform: uppercase; }
-    .badge-green { background: rgba(76,175,125,0.15); color: var(--green); border: 1px solid rgba(76,175,125,0.3); }
-    .badge-orange { background: rgba(240,160,75,0.15); color: var(--orange); border: 1px solid rgba(240,160,75,0.3); }
-    .badge-red { background: rgba(224,92,92,0.15); color: var(--red); border: 1px solid rgba(224,92,92,0.3); }
-    .metric { margin-bottom: 14px; }
-    .metric-label { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
-    .metric-val { font-size: 20px; font-weight: 700; }
-    .metric-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
-    hr.divline { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
-    .table-wrap { overflow-x: auto; margin-bottom: 24px; }
-    table { width: 100%; border-collapse: collapse; }
-    th { background: var(--bg3); color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
-    td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 13px; }
-    .td-right { text-align: right; }
-    .td-gold { color: var(--gold); font-weight: 600; }
+    .muted { color: var(--muted); }
+
+    /* SCENARIO CARDS — stacked on mobile */
+    .scenarios { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+    @media (min-width: 700px) { .scenarios { flex-direction: row; } }
+    .sc { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; flex: 1; }
+    .sc.hi { border-color: rgba(240,160,75,0.4); }
+    .sc.lo { border-color: rgba(224,92,92,0.3); }
+    .sc-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+    .sc-ltv { font-size: 32px; font-weight: 800; }
+    .sc-badge { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; }
+    .b-orange { background: rgba(240,160,75,0.15); color: var(--orange); border: 1px solid rgba(240,160,75,0.3); }
+    .b-blue   { background: rgba(91,156,246,0.15); color: var(--blue);   border: 1px solid rgba(91,156,246,0.3); }
+    .b-red    { background: rgba(224,92,92,0.15);  color: var(--red);    border: 1px solid rgba(224,92,92,0.3); }
+    .sc-row { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .sc-row:last-child { border-bottom: none; }
+    .sc-key { color: var(--muted); font-size: 12px; }
+    .sc-val { font-weight: 700; }
+    .sc-equity { font-size: 20px; }
+    hr.div { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
+
+    /* SUMMARY TABLE — scrollable */
+    .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 16px; border-radius: 10px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; min-width: 480px; }
+    th { background: #161B26; color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    td { padding: 9px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; white-space: nowrap; }
+    .tr-total td { background: rgba(255,255,255,0.04); font-weight: 700; border-top: 1px solid var(--border); }
+    .td-r { text-align: right; }
+    .td-g { color: var(--gold); font-weight: 600; }
     .td-red { color: var(--red); }
-    .td-green { color: var(--green); }
-    .td-muted { color: var(--muted); }
-    .td-total td { background: rgba(255,255,255,0.03); border-top: 1px solid var(--border); font-weight: 700; }
-    tr:hover td { background: rgba(255,255,255,0.02); }
-    .alert { padding: 16px 20px; border-radius: 10px; margin-bottom: 16px; font-size: 13px; }
-    .alert-red { background: rgba(224,92,92,0.1); border: 1px solid rgba(224,92,92,0.3); color: #f0a0a0; }
-    .alert-gold { background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.3); color: var(--gold-light); }
-    .alert-blue { background: rgba(91,156,246,0.1); border: 1px solid rgba(91,156,246,0.3); color: #a0c0ff; }
-    .alert strong { color: #fff; }
-    footer { padding: 32px; text-align: center; color: var(--muted); font-size: 12px; max-width: 1200px; margin: 0 auto; }
+    .td-gr { color: var(--green); }
+    .td-m { color: var(--muted); }
+
+    footer { padding: 24px 16px; text-align: center; color: var(--muted); font-size: 11px; }
+    footer a { color: var(--gold); text-decoration: none; }
   </style>
 </head>
 <body>
 
 <nav>
-  <div class="nav-brand">TRMIG · KINGSTON RD</div>
-  <div class="nav-links">
-    <a href="index.html">← Full Assessment</a>
-  </div>
+  <div class="nav-brand">KINGSTON RD</div>
+  <a class="nav-back" href="index.html">← Assessment</a>
   <div class="nav-badge">STRESS TEST</div>
 </nav>
 
+<!-- HERO -->
 <div class="hero">
-  <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">2759–2763 Kingston Rd · Scarborough</div>
-  <h1>Stress Test — Revised Scenarios</h1>
-  <div class="hero-sub">Hard cost escalated · Contingency doubled · LTV at <span>75 / 80 / 85%</span></div>
-
-  <div class="amendments-bar">
-    <div class="amend-chip">
-      <div class="amend-label">Hard Construction</div>
-      <div class="amend-from">$215/sf</div>
-      <div class="amend-val">$285/sf</div>
-    </div>
-    <div class="vdivider"></div>
-    <div class="amend-chip">
-      <div class="amend-label">Contingency</div>
-      <div class="amend-from">5%</div>
-      <div class="amend-val">10%</div>
-    </div>
-    <div class="vdivider"></div>
-    <div class="amend-chip">
-      <div class="amend-label">Soft Costs</div>
-      <div class="amend-val">18% (unchanged)</div>
-    </div>
-    <div class="vdivider"></div>
-    <div class="amend-chip">
-      <div class="amend-label">GCA</div>
-      <div class="amend-val">111,992 sf (unchanged)</div>
-    </div>
-    <div class="vdivider"></div>
-    <div class="amend-chip">
-      <div class="amend-label">Land</div>
-      <div class="amend-val">$6.5M (unchanged)</div>
-    </div>
-    <div class="vdivider"></div>
-    <div class="amend-chip">
-      <div class="amend-label">LTV Scenarios</div>
-      <div class="amend-val">75% · 80% · 85%</div>
-    </div>
+  <div class="hero-label">2759–2763 Kingston Rd · TRMIG</div>
+  <h1>Stress Test Scenarios</h1>
+  <div class="hero-sub">$285/sf · 10% contingency · LTV 75 / 80 / 85%</div>
+  <div class="pills">
+    <div class="pill"><span class="pill-label">Hard Cost </span><span class="pill-old">$215</span> → <span class="pill-val">$285/sf</span></div>
+    <div class="pill"><span class="pill-label">Contingency </span><span class="pill-old">5%</span> → <span class="pill-val">10%</span></div>
+    <div class="pill"><span class="pill-val">LTV: 75 · 80 · 85%</span></div>
+    <div class="pill"><span class="pill-val">Soft Costs 18% (unchanged)</span></div>
   </div>
 </div>
 
-<!-- REVISED COST STACK -->
+<!-- COST STACK -->
 <section>
-  <div class="section-label">Revised Cost Stack</div>
-  <div class="section-title">$285/sf · 10% Contingency</div>
-  <div class="section-desc">Hard cost escalation of $70/sf (+32.6%) reflects current Toronto mid-rise construction market. Contingency doubled to 10% to stress-test budget risk.</div>
+  <div class="sec-label">Revised Cost Stack</div>
+  <div class="sec-title">$47.9M Total Cost</div>
+  <div class="sec-desc">+$11.6M vs original. Hard cost +$7.8M, softs +$1.4M, contingency +$2.3M.</div>
 
   <div class="alert alert-red">
-    <strong>⚠ Value Gap Alert:</strong> At $285/sf with 10% contingency, Total Project Cost ($47,929,201) exceeds Appraised Value ($35,981,533) by <strong>$11,947,668</strong>. CMHC loan is capped at appraised-value LTV — not cost. Equity gap widens dramatically.
+    <strong>⚠ Value Gap: −$11,947,668</strong> — Total cost ($47.9M) blows past appraised value ($35.98M). CMHC lends on appraised value, not cost. Equity requirement multiplies.
   </div>
 
-  <div class="cost-grid">
-    <div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Cost Category</th>
-              <th>Basis</th>
-              <th class="td-right">Original</th>
-              <th class="td-right">Revised</th>
-              <th class="td-right">Delta</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Hard Construction</td>
-              <td class="td-muted">111,992 sf × $285</td>
-              <td class="td-right td-muted">$24,078,280</td>
-              <td class="td-right td-gold">$31,917,720</td>
-              <td class="td-right delta-up">+$7,839,440</td>
-            </tr>
-            <tr>
-              <td>Soft Costs (18%)</td>
-              <td class="td-muted">18% of hard</td>
-              <td class="td-right td-muted">$4,334,090</td>
-              <td class="td-right">$5,745,190</td>
-              <td class="td-right delta-up">+$1,411,100</td>
-            </tr>
-            <tr>
-              <td>Contingency (10%)</td>
-              <td class="td-muted">10% of hard + soft</td>
-              <td class="td-right td-muted">$1,420,619</td>
-              <td class="td-right">$3,766,291</td>
-              <td class="td-right delta-up">+$2,345,672</td>
-            </tr>
-            <tr class="td-total">
-              <td><strong>Total Construction</strong></td>
-              <td class="td-muted">excl. land</td>
-              <td class="td-right td-muted">$29,832,989</td>
-              <td class="td-right"><strong>$41,429,201</strong></td>
-              <td class="td-right delta-up"><strong>+$11,596,212</strong></td>
-            </tr>
-            <tr>
-              <td>Land</td>
-              <td class="td-muted">incl. debt discharge</td>
-              <td class="td-right td-muted">$6,500,000</td>
-              <td class="td-right">$6,500,000</td>
-              <td class="td-right td-muted">—</td>
-            </tr>
-            <tr class="td-total">
-              <td><strong>Total Project Cost</strong></td>
-              <td></td>
-              <td class="td-right td-muted">$36,332,989</td>
-              <td class="td-right td-red"><strong>$47,929,201</strong></td>
-              <td class="td-right delta-up"><strong>+$11,596,212</strong></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <div class="cost-card">
+    <div class="cost-row">
+      <span class="cost-key">Hard Construction<br><span style="font-size:11px;">111,992 sf × $285</span></span>
+      <span class="cost-val gold">$31,917,720</span>
+      <span class="cost-delta">+$7.8M</span>
     </div>
+    <div class="cost-row">
+      <span class="cost-key">Soft Costs (18%)</span>
+      <span class="cost-val">$5,745,190</span>
+      <span class="cost-delta">+$1.4M</span>
+    </div>
+    <div class="cost-row">
+      <span class="cost-key">Contingency (10%)</span>
+      <span class="cost-val">$3,766,291</span>
+      <span class="cost-delta">+$2.3M</span>
+    </div>
+    <div class="cost-row total">
+      <span class="cost-key" style="color:var(--text);">Total Construction</span>
+      <span class="cost-val">$41,429,201</span>
+      <span class="cost-delta">+$11.6M</span>
+    </div>
+    <div class="cost-row">
+      <span class="cost-key">Land</span>
+      <span class="cost-val">$6,500,000</span>
+      <span class="cost-delta muted">—</span>
+    </div>
+    <div class="cost-row total">
+      <span class="cost-key" style="color:var(--text);">Total Project Cost</span>
+      <span class="cost-val red">$47,929,201</span>
+      <span class="cost-delta">+$11.6M</span>
+    </div>
+  </div>
 
-    <div>
-      <div class="card">
-        <div class="card-title">📊 Pro Forma — Revenue Unchanged</div>
-        <div class="stat-row"><span class="stat-key">Gross Potential Revenue</span><span class="stat-val">$2,720,378</span></div>
-        <div class="stat-row"><span class="stat-key">Vacancy (4.0%)</span><span class="stat-val red">($108,815)</span></div>
-        <div class="stat-row"><span class="stat-key">Effective Gross Income</span><span class="stat-val">$2,611,563</span></div>
-        <div class="stat-row"><span class="stat-key">Operating Expenses (38%)</span><span class="stat-val red">($992,394)</span></div>
-        <div class="stat-row"><span class="stat-key">Property Tax (12%)</span><span class="stat-val red">($313,388)</span></div>
-        <div class="stat-row"><span class="stat-key">NOI</span><span class="stat-val gold" style="font-size:16px;">$1,619,169</span></div>
-      </div>
-      <div class="card" style="margin-top:16px;">
-        <div class="card-title">🏦 Value vs. Cost</div>
-        <div class="stat-row"><span class="stat-key">Appraised Value (NOI ÷ 4.5%)</span><span class="stat-val gold">$35,981,533</span></div>
-        <div class="stat-row"><span class="stat-key">Total Project Cost</span><span class="stat-val red">$47,929,201</span></div>
-        <div class="stat-row"><span class="stat-key">Value Gap</span><span class="stat-val red" style="font-size:16px;">−$11,947,668</span></div>
-        <div class="stat-row"><span class="stat-key">Cost Per Door (95 units)</span><span class="stat-val">$504,518</span></div>
-      </div>
+  <div class="cost-card">
+    <div class="cost-row">
+      <span class="cost-key">NOI (unchanged)</span>
+      <span class="cost-val gold">$1,619,169</span>
+    </div>
+    <div class="cost-row">
+      <span class="cost-key">Appraised Value (NOI ÷ 4.5%)</span>
+      <span class="cost-val gold">$35,981,533</span>
+    </div>
+    <div class="cost-row">
+      <span class="cost-key">Value Gap</span>
+      <span class="cost-val red">−$11,947,668</span>
+    </div>
+    <div class="cost-row">
+      <span class="cost-key">Cost Per Door (95 units)</span>
+      <span class="cost-val red">$504,518</span>
     </div>
   </div>
 </section>
 
-<!-- LTV SCENARIOS -->
+<!-- SCENARIOS -->
 <section>
-  <div class="section-label">LTV Stress Test</div>
-  <div class="section-title">Three Financing Scenarios</div>
-  <div class="section-desc">Loan sized on CMHC appraised value ($35,981,533). Rate: 3.65%, 50-yr amortization (annual mortgage constant ~4.355%). Equity = Total Cost − Loan.</div>
+  <div class="sec-label">LTV Scenarios</div>
+  <div class="sec-title">75 / 80 / 85%</div>
+  <div class="sec-desc">Loan on appraised value $35,981,533 · Rate 3.65% · 50-yr amort · Annual MC ~4.355%</div>
 
-  <div class="scenario-grid">
+  <div class="scenarios">
 
-    <!-- 85% LTV -->
-    <div class="scenario-card hi-ltv">
-      <div class="scenario-header">
+    <!-- 85% -->
+    <div class="sc hi">
+      <div class="sc-head">
         <div>
-          <div class="metric-label">LTV</div>
-          <div class="scenario-ltv gold">85%</div>
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">LTV</div>
+          <div class="sc-ltv gold">85%</div>
         </div>
-        <div class="scenario-badge badge-orange">Max CMHC</div>
+        <div class="sc-badge b-orange">Max CMHC</div>
       </div>
-      <div class="metric">
-        <div class="metric-label">Loan Amount</div>
-        <div class="metric-val">$30,584,303</div>
-        <div class="metric-sub">85% × $35,981,533</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Annual Debt Service</div>
-        <div class="metric-val">$1,331,946</div>
-        <div class="metric-sub">3.65% · 50-yr</div>
-      </div>
-      <hr class="divline">
-      <div class="metric">
-        <div class="metric-label">DSCR</div>
-        <div class="metric-val orange">1.22x</div>
-        <div class="metric-sub">$1,619,169 ÷ $1,331,946</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Equity Required</div>
-        <div class="metric-val red" style="font-size:22px;">$17,344,898</div>
-        <div class="metric-sub">$47.9M cost − $30.6M loan</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Annual Cash Flow</div>
-        <div class="metric-val orange">$287,223</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Cash-on-Cash</div>
-        <div class="metric-val">1.66%</div>
-      </div>
+      <div class="sc-row"><span class="sc-key">Loan</span><span class="sc-val">$30,584,303</span></div>
+      <div class="sc-row"><span class="sc-key">Debt Service / yr</span><span class="sc-val">$1,331,946</span></div>
+      <hr class="div">
+      <div class="sc-row"><span class="sc-key">DSCR</span><span class="sc-val orange">1.22x</span></div>
+      <div class="sc-row"><span class="sc-key">Cash Flow / yr</span><span class="sc-val orange">$287,223</span></div>
+      <div class="sc-row"><span class="sc-key">Cash-on-Cash</span><span class="sc-val">1.66%</span></div>
+      <hr class="div">
+      <div class="sc-row"><span class="sc-key">Equity Required</span><span class="sc-val red sc-equity">$17,344,898</span></div>
     </div>
 
-    <!-- 80% LTV -->
-    <div class="scenario-card">
-      <div class="scenario-header">
+    <!-- 80% -->
+    <div class="sc">
+      <div class="sc-head">
         <div>
-          <div class="metric-label">LTV</div>
-          <div class="scenario-ltv blue">80%</div>
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">LTV</div>
+          <div class="sc-ltv blue">80%</div>
         </div>
-        <div class="scenario-badge badge-orange">Conventional</div>
+        <div class="sc-badge b-blue">Conventional</div>
       </div>
-      <div class="metric">
-        <div class="metric-label">Loan Amount</div>
-        <div class="metric-val">$28,785,226</div>
-        <div class="metric-sub">80% × $35,981,533</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Annual Debt Service</div>
-        <div class="metric-val">$1,253,569</div>
-        <div class="metric-sub">3.65% · 50-yr</div>
-      </div>
-      <hr class="divline">
-      <div class="metric">
-        <div class="metric-label">DSCR</div>
-        <div class="metric-val blue">1.29x</div>
-        <div class="metric-sub">$1,619,169 ÷ $1,253,569</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Equity Required</div>
-        <div class="metric-val red" style="font-size:22px;">$19,143,975</div>
-        <div class="metric-sub">$47.9M cost − $28.8M loan</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Annual Cash Flow</div>
-        <div class="metric-val blue">$365,600</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Cash-on-Cash</div>
-        <div class="metric-val">1.91%</div>
-      </div>
+      <div class="sc-row"><span class="sc-key">Loan</span><span class="sc-val">$28,785,226</span></div>
+      <div class="sc-row"><span class="sc-key">Debt Service / yr</span><span class="sc-val">$1,253,569</span></div>
+      <hr class="div">
+      <div class="sc-row"><span class="sc-key">DSCR</span><span class="sc-val blue">1.29x</span></div>
+      <div class="sc-row"><span class="sc-key">Cash Flow / yr</span><span class="sc-val blue">$365,600</span></div>
+      <div class="sc-row"><span class="sc-key">Cash-on-Cash</span><span class="sc-val">1.91%</span></div>
+      <hr class="div">
+      <div class="sc-row"><span class="sc-key">Equity Required</span><span class="sc-val red sc-equity">$19,143,975</span></div>
     </div>
 
-    <!-- 75% LTV -->
-    <div class="scenario-card lo-ltv">
-      <div class="scenario-header">
+    <!-- 75% -->
+    <div class="sc lo">
+      <div class="sc-head">
         <div>
-          <div class="metric-label">LTV</div>
-          <div class="scenario-ltv" style="color:var(--muted);">75%</div>
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">LTV</div>
+          <div class="sc-ltv muted">75%</div>
         </div>
-        <div class="scenario-badge badge-red">Conservative</div>
+        <div class="sc-badge b-red">Conservative</div>
       </div>
-      <div class="metric">
-        <div class="metric-label">Loan Amount</div>
-        <div class="metric-val">$26,986,150</div>
-        <div class="metric-sub">75% × $35,981,533</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Annual Debt Service</div>
-        <div class="metric-val">$1,175,196</div>
-        <div class="metric-sub">3.65% · 50-yr</div>
-      </div>
-      <hr class="divline">
-      <div class="metric">
-        <div class="metric-label">DSCR</div>
-        <div class="metric-val green">1.38x</div>
-        <div class="metric-sub">$1,619,169 ÷ $1,175,196</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Equity Required</div>
-        <div class="metric-val red" style="font-size:22px;">$20,943,051</div>
-        <div class="metric-sub">$47.9M cost − $27.0M loan</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Annual Cash Flow</div>
-        <div class="metric-val green">$443,973</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Cash-on-Cash</div>
-        <div class="metric-val">2.12%</div>
-      </div>
+      <div class="sc-row"><span class="sc-key">Loan</span><span class="sc-val">$26,986,150</span></div>
+      <div class="sc-row"><span class="sc-key">Debt Service / yr</span><span class="sc-val">$1,175,196</span></div>
+      <hr class="div">
+      <div class="sc-row"><span class="sc-key">DSCR</span><span class="sc-val green">1.38x</span></div>
+      <div class="sc-row"><span class="sc-key">Cash Flow / yr</span><span class="sc-val green">$443,973</span></div>
+      <div class="sc-row"><span class="sc-key">Cash-on-Cash</span><span class="sc-val">2.12%</span></div>
+      <hr class="div">
+      <div class="sc-row"><span class="sc-key">Equity Required</span><span class="sc-val red sc-equity">$20,943,051</span></div>
     </div>
 
   </div>
 
-  <!-- COMPARISON TABLE -->
-  <div class="table-wrap">
+  <!-- SUMMARY TABLE -->
+  <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">← scroll →</div>
+  <div class="tbl-wrap">
     <table>
       <thead>
         <tr>
           <th>Metric</th>
-          <th class="td-right">Original<br><span style="font-weight:400;color:var(--muted);">$215/sf · 5% · 90% LTV</span></th>
-          <th class="td-right">85% LTV</th>
-          <th class="td-right">80% LTV</th>
-          <th class="td-right">75% LTV</th>
+          <th class="td-r">Original<br>$215/sf·5%·90%</th>
+          <th class="td-r">85% LTV</th>
+          <th class="td-r">80% LTV</th>
+          <th class="td-r">75% LTV</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Hard Cost / SF</td>
-          <td class="td-right td-muted">$215</td>
-          <td class="td-right" colspan="3" style="color:var(--red);">$285 (all)</td>
-        </tr>
-        <tr>
-          <td>Contingency</td>
-          <td class="td-right td-muted">5%</td>
-          <td class="td-right" colspan="3" style="color:var(--red);">10% (all)</td>
-        </tr>
-        <tr>
-          <td>Total Project Cost</td>
-          <td class="td-right td-muted">$36,332,989</td>
-          <td class="td-right td-red" colspan="3">$47,929,201</td>
-        </tr>
-        <tr>
-          <td>Appraised Value</td>
-          <td class="td-right">$35,981,533</td>
-          <td class="td-right" colspan="3">$35,981,533</td>
-        </tr>
-        <tr>
-          <td>Value Gap</td>
-          <td class="td-right td-muted">−$351,456</td>
-          <td class="td-right td-red" colspan="3">−$11,947,668</td>
-        </tr>
-        <tr>
-          <td>Loan Amount</td>
-          <td class="td-right td-gold">~$32,383,380</td>
-          <td class="td-right">$30,584,303</td>
-          <td class="td-right">$28,785,226</td>
-          <td class="td-right">$26,986,150</td>
-        </tr>
-        <tr>
-          <td>Annual Debt Service</td>
-          <td class="td-right td-muted">~$1,410,296</td>
-          <td class="td-right">$1,331,946</td>
-          <td class="td-right">$1,253,569</td>
-          <td class="td-right">$1,175,196</td>
-        </tr>
-        <tr>
-          <td>DSCR</td>
-          <td class="td-right td-gold">1.15x</td>
-          <td class="td-right orange">1.22x</td>
-          <td class="td-right blue">1.29x</td>
-          <td class="td-right td-green">1.38x</td>
-        </tr>
-        <tr class="td-total">
-          <td><strong>Equity Required</strong></td>
-          <td class="td-right td-gold"><strong>$3,700,070</strong></td>
-          <td class="td-right td-red"><strong>$17,344,898</strong></td>
-          <td class="td-right td-red"><strong>$19,143,975</strong></td>
-          <td class="td-right td-red"><strong>$20,943,051</strong></td>
-        </tr>
-        <tr>
-          <td>Annual Cash Flow</td>
-          <td class="td-right td-muted">$208,873</td>
-          <td class="td-right orange">$287,223</td>
-          <td class="td-right blue">$365,600</td>
-          <td class="td-right td-green">$443,973</td>
-        </tr>
-        <tr>
-          <td>Cash-on-Cash Return</td>
-          <td class="td-right td-muted">3.98%</td>
-          <td class="td-right">1.66%</td>
-          <td class="td-right">1.91%</td>
-          <td class="td-right">2.12%</td>
-        </tr>
-        <tr>
-          <td>Cost Per Door</td>
-          <td class="td-right td-muted">$382,453</td>
-          <td class="td-right td-red" colspan="3">$504,518</td>
-        </tr>
+        <tr><td>Total Cost</td><td class="td-r td-m">$36,332,989</td><td class="td-r td-red" colspan="3">$47,929,201</td></tr>
+        <tr><td>Value Gap</td><td class="td-r td-m">−$351K</td><td class="td-r td-red" colspan="3">−$11,947,668</td></tr>
+        <tr><td>Loan</td><td class="td-r td-g">~$32.4M</td><td class="td-r">$30.6M</td><td class="td-r">$28.8M</td><td class="td-r">$27.0M</td></tr>
+        <tr><td>Debt Service</td><td class="td-r td-m">~$1.41M</td><td class="td-r">$1,331,946</td><td class="td-r">$1,253,569</td><td class="td-r">$1,175,196</td></tr>
+        <tr><td>DSCR</td><td class="td-r td-g">1.15x</td><td class="td-r" style="color:var(--orange);">1.22x</td><td class="td-r" style="color:var(--blue);">1.29x</td><td class="td-r td-gr">1.38x</td></tr>
+        <tr class="tr-total"><td><strong>Equity Required</strong></td><td class="td-r td-g"><strong>$3,700,070</strong></td><td class="td-r td-red"><strong>$17,344,898</strong></td><td class="td-r td-red"><strong>$19,143,975</strong></td><td class="td-r td-red"><strong>$20,943,051</strong></td></tr>
+        <tr><td>Cash Flow / yr</td><td class="td-r td-m">$208,873</td><td class="td-r">$287,223</td><td class="td-r">$365,600</td><td class="td-r">$443,973</td></tr>
+        <tr><td>Cash-on-Cash</td><td class="td-r td-m">3.98%</td><td class="td-r">1.66%</td><td class="td-r">1.91%</td><td class="td-r">2.12%</td></tr>
+        <tr><td>Cost / Door</td><td class="td-r td-m">$382,453</td><td class="td-r td-red" colspan="3">$504,518</td></tr>
       </tbody>
     </table>
   </div>
@@ -453,62 +277,23 @@
 
 <!-- FINDINGS -->
 <section>
-  <div class="section-label">Stress Test Findings</div>
-  <div class="section-title">What This Tells You</div>
+  <div class="sec-label">Key Findings</div>
+  <div class="sec-title">What This Tells You</div>
 
   <div class="alert alert-red">
-    <strong>🔴 Critical Finding:</strong> The $70/sf hard cost escalation ($215 → $285) adds <strong>$11.6M</strong> to total project cost. Because CMHC loans against appraised value (not cost), equity requirement explodes from <strong>$3.7M → $17–21M</strong>. The deal as structured at $6.5M land does not work at market construction costs.
+    <strong>🔴 Equity explodes.</strong> From $3.7M → $17–21M. The $70/sf cost jump alone adds $11.6M. CMHC still lends the same amount (appraised value is income-driven, not cost-driven).
   </div>
-
   <div class="alert alert-gold">
-    <strong>💡 Path to Viability:</strong> To make the deal work at $285/sf you need one of: (1) <strong>land cost reduced to ~$4.0–4.5M</strong> (vs. $6.5M ask), (2) <strong>NOI increased</strong> to push appraised value above $47.9M (requires ~35% rent increase — not realistic), or (3) <strong>JV with seller contributing land as equity</strong> to absorb the shortfall. Breakeven land price at $285/sf ≈ <strong>$4.05M</strong>.
+    <strong>💡 DSCR is fine — equity is the problem.</strong> 1.22x–1.38x across all three. The project cash flows. The deal breaks on the cost-to-value gap, not debt coverage.
   </div>
-
   <div class="alert alert-blue">
-    <strong>📐 DSCR is Healthy — Equity is the Problem:</strong> All three LTV scenarios show solid DSCR (1.22x–1.38x). The project cash flows. The issue is not debt service — it's the <strong>$11.9M cost-to-value gap</strong> that must be absorbed by equity or land price compression.
-  </div>
-
-  <div style="margin-top:32px;">
-    <div class="section-label" style="margin-bottom:16px;">Breakeven Analysis</div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Lever</th><th>Current</th><th>Required to Break Even</th><th>Feasibility</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Land Price</td>
-            <td class="td-muted">$6,500,000</td>
-            <td class="td-gold">~$4,052,533</td>
-            <td class="td-green">Negotiable — seller at $5.5M own valuation</td>
-          </tr>
-          <tr>
-            <td>Average Rent (blended)</td>
-            <td class="td-muted">~$2,400/mo</td>
-            <td class="td-muted">~$3,240/mo (+35%)</td>
-            <td class="td-red">Not realistic in current Scarborough market</td>
-          </tr>
-          <tr>
-            <td>Hard Cost</td>
-            <td class="td-muted">$285/sf (market)</td>
-            <td class="td-muted">~$222/sf</td>
-            <td class="td-red">Below current market — not achievable</td>
-          </tr>
-          <tr>
-            <td>Cap Rate (value basis)</td>
-            <td class="td-muted">4.50%</td>
-            <td class="td-muted">3.38% (NOI ÷ $47.9M)</td>
-            <td class="td-red">CMHC uses standard cap rate — not adjustable</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <strong>📐 Path to viability:</strong> Land needs to come in at ~<strong>$4.05M</strong> (vs. $6.5M ask) to close the gap. JV with seller contributing land as equity is the cleanest fix. Seller's own valuation was $5.5M — there's room to negotiate.
   </div>
 </section>
 
 <footer>
-  <div>TRMIG · 2759–2763 Kingston Rd Stress Test · Generated March 2, 2026</div>
-  <div style="margin-top:6px;"><a href="index.html" style="color:var(--gold);text-decoration:none;">← Full Assessment</a></div>
+  TRMIG · 2759–2763 Kingston Rd Stress Test · March 2, 2026<br>
+  <a href="index.html">← Full Assessment</a>
 </footer>
 
 </body>
