@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Kingston Rd — Heal House Blend</title>
+  <style>
+    :root {
+      --gold: #C9A84C; --gold-light: #E2C97E; --gold-dim: rgba(201,168,76,0.15);
+      --bg: #0B0E13; --card: #1A2030; --border: rgba(255,255,255,0.07);
+      --text: #E8EAF0; --muted: #7B8299;
+      --green: #4CAF7D; --red: #E05C5C; --blue: #5B9CF6; --orange: #F0A04B;
+      --teal: #3EC9C0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
+
+    nav { background: rgba(11,14,19,0.97); border-bottom: 1px solid var(--border); padding: 0 16px; display: flex; align-items: center; justify-content: space-between; height: 48px; position: sticky; top: 0; z-index: 100; }
+    .nav-brand { font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 1px; }
+    .nav-back { color: var(--muted); text-decoration: none; font-size: 12px; }
+    .nav-badge { background: rgba(62,201,192,0.15); border: 1px solid rgba(62,201,192,0.35); color: var(--teal); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+
+    .hero { padding: 28px 16px 20px; border-bottom: 1px solid var(--border); }
+    .hero-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
+    .hero h1 { font-size: 22px; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 6px; }
+    .hero-sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill { background: var(--card); border: 1px solid rgba(62,201,192,0.25); border-radius: 20px; padding: 4px 12px; font-size: 12px; color: var(--teal); font-weight: 600; }
+    .pill.gold { border-color: rgba(201,168,76,0.3); color: var(--gold); }
+
+    section { padding: 24px 16px; border-bottom: 1px solid var(--border); }
+    .sec-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); margin-bottom: 4px; }
+    .sec-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .sec-desc { color: var(--muted); font-size: 12px; margin-bottom: 16px; }
+
+    .alert { padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; font-size: 12px; line-height: 1.5; }
+    .alert-green { background: rgba(76,175,125,0.1); border: 1px solid rgba(76,175,125,0.3); color: #a0e0c0; }
+    .alert-gold  { background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.3); color: var(--gold-light); }
+    .alert-teal  { background: rgba(62,201,192,0.08); border: 1px solid rgba(62,201,192,0.3); color: #90e0dd; }
+    .alert-red   { background: rgba(224,92,92,0.1); border: 1px solid rgba(224,92,92,0.3); color: #f0b0b0; }
+    .alert strong { color: #fff; }
+
+    /* LOGIC CHAIN */
+    .chain { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+    .chain-item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+    .chain-item.upgrade { border-color: rgba(62,201,192,0.3); }
+    .chain-key { color: var(--muted); font-size: 12px; }
+    .chain-val { font-weight: 700; text-align: right; }
+    .chain-arrow { text-align: center; color: var(--muted); font-size: 16px; }
+
+    /* SCENARIO CARDS */
+    .scenarios { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+    @media (min-width: 700px) { .scenarios { flex-direction: row; } }
+    .sc { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; flex: 1; }
+    .sc.base { border-color: rgba(62,201,192,0.4); }
+    .sc-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .sc-name { font-size: 18px; font-weight: 800; margin-bottom: 14px; }
+    .sc-name.cons { color: var(--muted); }
+    .sc-name.base { color: var(--teal); }
+    .sc-name.opti { color: var(--gold); }
+    .sc-row { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .sc-row:last-child { border-bottom: none; }
+    .sc-key { color: var(--muted); font-size: 12px; }
+    .sc-val { font-weight: 700; }
+    hr.div { border: none; border-top: 1px solid var(--border); margin: 10px 0; }
+    .sc-highlight { font-size: 20px; }
+
+    .gold { color: var(--gold); }
+    .red  { color: var(--red); }
+    .green{ color: var(--green); }
+    .blue { color: var(--blue); }
+    .orange{color: var(--orange);}
+    .teal { color: var(--teal); }
+    .muted{ color: var(--muted); }
+
+    /* COST CARD */
+    .cost-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 12px; }
+    .cost-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .cost-row:last-child { border-bottom: none; }
+    .cost-row.total { background: rgba(255,255,255,0.03); font-weight: 700; }
+    .cost-row.upgrade { border-left: 3px solid var(--teal); }
+    .cost-key { color: var(--muted); font-size: 12px; flex: 1; }
+    .cost-val { font-weight: 600; text-align: right; }
+
+    /* TABLE */
+    .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 16px; border-radius: 10px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; min-width: 460px; }
+    th { background: #161B26; color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    td { padding: 9px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; white-space: nowrap; }
+    .tr-total td { background: rgba(255,255,255,0.04); font-weight: 700; border-top: 1px solid var(--border); }
+    .tr-key td { background: rgba(62,201,192,0.05); font-weight: 700; }
+    .td-r { text-align: right; }
+    .td-g { color: var(--gold); font-weight: 600; }
+    .td-red { color: var(--red); }
+    .td-gr { color: var(--green); }
+    .td-m { color: var(--muted); }
+    .td-t { color: var(--teal); font-weight: 600; }
+
+    /* JV BOX */
+    .jv-box { background: var(--card); border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+    .jv-title { font-size: 13px; font-weight: 700; color: var(--gold); margin-bottom: 12px; }
+    .jv-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .jv-row:last-child { border-bottom: none; }
+    .jv-key { color: var(--muted); font-size: 12px; }
+
+    footer { padding: 24px 16px; text-align: center; color: var(--muted); font-size: 11px; }
+    footer a { color: var(--gold); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">KINGSTON RD</div>
+  <a class="nav-back" href="scenarios.html">← Stress Test</a>
+  <div class="nav-badge">HEAL HOUSE BLEND</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">2759–2763 Kingston Rd · TRMIG</div>
+  <h1>Heal House Blend</h1>
+  <div class="hero-sub">Wellness anchor + rent premium + seller JV</div>
+  <div class="pills">
+    <div class="pill">Heal House @ $38–45/sf NNN</div>
+    <div class="pill">+5–12% residential rent lift</div>
+    <div class="pill gold">Seller land equity in</div>
+    <div class="pill gold">$285/sf · 10% contingency</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section>
+  <div class="sec-label">The Thesis</div>
+  <div class="sec-title">Three Levers, One Stack</div>
+  <div class="sec-desc">Heal House changes the building's income profile. Seller staying in removes the land equity gap. Together they dramatically reduce developer cash-in.</div>
+
+  <div class="alert alert-teal">
+    <strong>🌿 Heal House Effect:</strong> Wellness anchor retail commands $38–45/sf NNN vs. $22/sf standard — a $75–108K/yr retail revenue uplift. It also justifies a 5–12% residential rent premium (data-driven wellness community positioning), adding another $130–315K/yr in NOI.
+  </div>
+  <div class="alert alert-gold">
+    <strong>🤝 Seller Stays In:</strong> Seller contributes land ($6.5M) as JV equity instead of cashing out. This removes the largest equity gap lever — the loan covers construction, seller's land equity covers the rest. Developer cash-in drops by $6.5M across all scenarios.
+  </div>
+
+  <div class="chain">
+    <div class="chain-item upgrade">
+      <span class="cost-key">Ground Floor Retail<br><span style="font-size:11px;">4,661 sf · $22/sf → $40–45/sf NNN</span></span>
+      <span class="chain-val teal">+$83–107K/yr</span>
+    </div>
+    <div class="chain-arrow">↓</div>
+    <div class="chain-item upgrade">
+      <span class="cost-key">Residential Rent Premium<br><span style="font-size:11px;">Wellness anchor positioning · 95 units</span></span>
+      <span class="chain-val teal">+5–12% rents</span>
+    </div>
+    <div class="chain-arrow">↓</div>
+    <div class="chain-item upgrade">
+      <span class="cost-key">Higher NOI → Higher Appraised Value<br><span style="font-size:11px;">NOI ÷ 4.5% cap rate</span></span>
+      <span class="chain-val teal">+$2.7–5.6M value</span>
+    </div>
+    <div class="chain-arrow">↓</div>
+    <div class="chain-item upgrade">
+      <span class="cost-key">Larger CMHC Loan<br><span style="font-size:11px;">85% LTV on higher appraisal</span></span>
+      <span class="chain-val teal">+$2.3–4.7M loan</span>
+    </div>
+    <div class="chain-arrow">↓</div>
+    <div class="chain-item" style="border-color:rgba(201,168,76,0.4);">
+      <span class="cost-key">Seller Land as Equity<br><span style="font-size:11px;">$6.5M stays in · JV waterfall</span></span>
+      <span class="chain-val gold">−$6.5M dev cash</span>
+    </div>
+    <div class="chain-arrow">↓</div>
+    <div class="chain-item" style="border-color:rgba(76,175,125,0.4);">
+      <span class="cost-key">Developer Cash Equity Required</span>
+      <span class="chain-val green sc-highlight">$6–9M</span>
+    </div>
+  </div>
+</section>
+
+<!-- THREE SCENARIOS -->
+<section>
+  <div class="sec-label">Revenue Scenarios</div>
+  <div class="sec-title">Conservative · Base · Optimistic</div>
+  <div class="sec-desc">All three use $285/sf hard cost, 10% contingency. Seller contributes land as JV equity. CMHC 85% LTV on appraised value. Rate 3.65%, 50-yr.</div>
+
+  <div class="scenarios">
+
+    <!-- CONSERVATIVE -->
+    <div class="sc">
+      <div class="sc-label">Scenario A</div>
+      <div class="sc-name cons">Conservative</div>
+      <div class="sc-row"><span class="sc-key">Residential rent lift</span><span class="sc-val muted">+5%</span></div>
+      <div class="sc-row"><span class="sc-key">Heal House retail</span><span class="sc-val muted">$38/sf NNN</span></div>
+      <div class="sc-row"><span class="sc-key">Retail revenue</span><span class="sc-val muted">$177,118/yr</span></div>
+      <div class="sc-row"><span class="sc-key">Residential GPR</span><span class="sc-val muted">$2,748,728</span></div>
+      <div class="sc-row"><span class="sc-key">Total GPR</span><span class="sc-val">$2,925,846</span></div>
+      <hr class="div">
+      <div class="sc-row"><span class="sc-key">NOI (62% × EGI)</span><span class="sc-val">$1,740,407</span></div>
+      <div class="sc-row"><span class="sc-key">Appraised Value</span><span class="sc-val">$38,675,711</span></div>
+      <div class="sc-row"><span class="sc-key">CMHC Loan (85%)</span><span class="sc-val">$32,874,354</span></div>
+      <hr class="div">
+      <div class="sc-row"><span class="sc-key">Total Cost</span><span class="sc-val red">$47,929,201</span></div>
+      <div class="sc-row"><span class="sc-key">Seller Land Equity</span><span class="sc-val gold">−$6,500,000</span></div>
+      <div class="sc-row"><span class="sc-key">CMHC Loan</span><span class="sc-val gold">−$32,874,354</span></div>
+      <div class="sc-row"><span class="sc-key">Dev Cash Required</span><span class="sc-val orange sc-highlight">$8,554,847</span></div>
+      <hr class="div">
+      <div class="sc-row"><span class="sc-key">Annual Cash Flow</span><span class="sc-val">$308,461</span></div>
+      <div class="sc-row"><span class="sc-key">DSCR</span><span class="sc-val orange">1.30x</span></div>
+    </div>
+
+    <!-- BASE -->
+    <div class="sc base">
+      <div class="sc-label">Scenario B · Recommended</div>
+      <div class="sc-name base">Base Case</div>
+      <div class="sc-row"><span class="sc-key">Residential rent lift</span><span class="sc-val teal">+8%</span></div>
+      <div class="sc-row"><span class="sc-key">Heal House retail</span><span class="sc-val teal">$42/sf NNN</span></div>
+      <div class="sc-row"><span class="sc-key">Retail revenue</span><span class="sc-val teal">$195,762/yr</span></div>
+      <div class="sc-row"><span class="sc-key">Residential GPR</span><span class="sc-val teal">$2,827,262</span></div>
+      <div class="sc-row"><span class="sc-key">Total GPR</span><span class="sc-val">$3,023,024</span></div>
+      <hr class="div">
+      <div class="sc-row"><span class="sc-key">NOI (62% × EGI)</span><span class="sc-val">$1,799,304</span></div>
+      <div class="sc-row"><span class="sc-key">Appraised Value</span><span class="sc-val teal">$39,984,533</span></div>
+      <div class="sc-row"><span class="sc-key">CMHC Loan (85%)</span><span class="sc-val teal">$33,987,053</span></div>
+      <hr class="div">
+      <div class="sc-row"><span class="sc-key">Total Cost</span><span class="sc-val red">$47,929,201</span></div>
+      <div class="sc-row"><span class="sc-key">Seller Land Equity</span><span class="sc-val gold">−$6,500,000</span></div>
+      <div class="sc-row"><span class="sc-key">CMHC Loan</span><span class="sc-val gold">−$33,987,053</span></div>
+      <div class="sc-row"><span class="sc-key">Dev Cash Required</span><span class="sc-val teal sc-highlight">$7,442,148</span></div>
+      <hr class="div">
+      <div class="sc-row"><span class="sc-key">Annual Cash Flow</span><span class="sc-val">$368,561</span></div>
+      <div class="sc-row"><span class="sc-key">DSCR</span><span class="sc-val teal">1.35x</span></div>
+    </div>
+
+    <!-- OPTIMISTIC -->
+    <div class="sc">
+      <div class="sc-label">Scenario C</div>
+      <div class="sc-name opti">Optimistic</div>
+      <div class="sc-row"><span class="sc-key">Residential rent lift</span><span class="sc-val gold">+12%</span></div>
+      <div class="sc-row"><span class="sc-key">Heal House retail</span><span class="sc-val gold">$45/sf NNN</span></div>
+      <div class="sc-row"><span class="sc-key">Retail revenue</span><span class="sc-val gold">$209,745/yr</span></div>
+      <div class="sc-row"><span class="sc-key">Residential GPR</span><span class="sc-val gold">$2,931,976</span></div>
+      <div class="sc-row"><span class="sc-key">Total GPR</span><span class="sc-val">$3,141,721</span></div>
+      <hr class="div">
+      <div class="sc-row"><span class="sc-key">NOI (62% × EGI)</span><span class="sc-val">$1,869,792</span></div>
+      <div class="sc-row"><span class="sc-key">Appraised Value</span><span class="sc-val gold">$41,550,933</span></div>
+      <div class="sc-row"><span class="sc-key">CMHC Loan (85%)</span><span class="sc-val gold">$35,318,293</span></div>
+      <hr class="div">
+      <div class="sc-row"><span class="sc-key">Total Cost</span><span class="sc-val red">$47,929,201</span></div>
+      <div class="sc-row"><span class="sc-key">Seller Land Equity</span><span class="sc-val gold">−$6,500,000</span></div>
+      <div class="sc-row"><span class="sc-key">CMHC Loan</span><span class="sc-val gold">−$35,318,293</span></div>
+      <div class="sc-row"><span class="sc-key">Dev Cash Required</span><span class="sc-val green sc-highlight">$6,110,908</span></div>
+      <hr class="div">
+      <div class="sc-row"><span class="sc-key">Annual Cash Flow</span><span class="sc-val">$438,456</span></div>
+      <div class="sc-row"><span class="sc-key">DSCR</span><span class="sc-val green">1.40x</span></div>
+    </div>
+
+  </div>
+
+  <!-- SUMMARY TABLE -->
+  <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">← scroll →</div>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="td-r">Stress Test<br><span style="font-weight:400;">No Heal House</span></th>
+          <th class="td-r">Conservative<br><span style="font-weight:400;">+5% · $38/sf</span></th>
+          <th class="td-r">Base Case<br><span style="font-weight:400;">+8% · $42/sf</span></th>
+          <th class="td-r">Optimistic<br><span style="font-weight:400;">+12% · $45/sf</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Total GPR</td><td class="td-r td-m">$2,720,378</td><td class="td-r">$2,925,846</td><td class="td-r">$3,023,024</td><td class="td-r td-g">$3,141,721</td></tr>
+        <tr><td>NOI</td><td class="td-r td-m">$1,619,169</td><td class="td-r">$1,740,407</td><td class="td-r">$1,799,304</td><td class="td-r td-g">$1,869,792</td></tr>
+        <tr><td>Appraised Value</td><td class="td-r td-m">$35,981,533</td><td class="td-r">$38,675,711</td><td class="td-r td-t">$39,984,533</td><td class="td-r td-g">$41,550,933</td></tr>
+        <tr><td>CMHC Loan (85%)</td><td class="td-r td-m">$30,584,303</td><td class="td-r">$32,874,354</td><td class="td-r td-t">$33,987,053</td><td class="td-r td-g">$35,318,293</td></tr>
+        <tr><td>Seller Equity In</td><td class="td-r td-red">$0</td><td class="td-r td-g" colspan="3">$6,500,000 (land)</td></tr>
+        <tr class="tr-key"><td><strong>Dev Cash Required</strong></td><td class="td-r td-red"><strong>$17,344,898</strong></td><td class="td-r" style="color:var(--orange);"><strong>$8,554,847</strong></td><td class="td-r td-t"><strong>$7,442,148</strong></td><td class="td-r td-gr"><strong>$6,110,908</strong></td></tr>
+        <tr><td>Cash Flow / yr</td><td class="td-r td-m">$287,223</td><td class="td-r">$308,461</td><td class="td-r">$368,561</td><td class="td-r td-gr">$438,456</td></tr>
+        <tr><td>DSCR</td><td class="td-r" style="color:var(--orange);">1.22x</td><td class="td-r">1.30x</td><td class="td-r td-t">1.35x</td><td class="td-r td-gr">1.40x</td></tr>
+        <tr><td>Value Gap</td><td class="td-r td-red">−$11,947,668</td><td class="td-r td-red">−$9,253,490</td><td class="td-r" style="color:var(--orange);">−$7,944,668</td><td class="td-r" style="color:var(--orange);">−$6,378,268</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- JV STRUCTURE -->
+<section>
+  <div class="sec-label">Seller JV</div>
+  <div class="sec-title">Keeping Capital In</div>
+  <div class="sec-desc">Seller contributes land as equity instead of cashing out. Structure below based on Base Case ($7.4M dev cash-in).</div>
+
+  <div class="jv-box">
+    <div class="jv-title">📐 JV Capital Stack — Base Case</div>
+    <div class="jv-row"><span class="jv-key">CMHC Senior Loan (85%)</span><span style="font-weight:700;color:var(--teal);">$33,987,053 · 71%</span></div>
+    <div class="jv-row"><span class="jv-key">Seller Land Equity</span><span style="font-weight:700;color:var(--gold);">$6,500,000 · 14%</span></div>
+    <div class="jv-row"><span class="jv-key">Developer Cash Equity</span><span style="font-weight:700;color:var(--green);">$7,442,148 · 15%</span></div>
+    <div class="jv-row"><span class="jv-key"><strong>Total Capitalization</strong></span><span style="font-weight:800;color:#fff;">$47,929,201</span></div>
+  </div>
+
+  <div class="alert alert-gold">
+    <strong>Suggested JV Waterfall:</strong> Seller gets preferred return on land equity (6–8% pref). Developer gets development fee (3–5% of hard costs ≈ $957K–$1.6M). Remaining cash flow splits 50/50 or 60/40 dev-favor with promote above 8% CoC. Seller gets land appreciated at entitled value on exit.
+  </div>
+
+  <div class="alert alert-green">
+    <strong>✅ Why Seller Should Say Yes:</strong> Land sits at $5.5M (own valuation). Staying in at $6.5M = instant paper appreciation. Gets preferred cash flow from day 1. Participates in upside without deploying new capital. Avoids triggering capital gains on full sale.
+  </div>
+</section>
+
+<!-- RECOMMENDATION -->
+<section>
+  <div class="sec-label">Recommendation</div>
+  <div class="sec-title">Go-Forward Position</div>
+
+  <div class="alert alert-teal">
+    <strong>🎯 Target: Base Case Scenario B</strong> — $7.4M developer cash-in for 95 units with Heal House anchor, seller JV, and CMHC 85% LTV. DSCR at 1.35x is comfortable. Bring Heal House term sheet to the table as proof of rent premium before finalizing LOI with seller.
+  </div>
+
+  <div class="cost-card">
+    <div class="cost-row upgrade"><span class="cost-key">1. Confirm Heal House LOI</span><span class="chain-val teal">Validates rent premium</span></div>
+    <div class="cost-row upgrade"><span class="cost-key">2. Propose JV to seller (land in)</span><span class="chain-val gold">Removes $6.5M equity gap</span></div>
+    <div class="cost-row upgrade"><span class="cost-key">3. Get CMHC pre-application</span><span class="chain-val teal">Confirms 85% LTV + 50yr</span></div>
+    <div class="cost-row upgrade"><span class="cost-key">4. Hard cost QS estimate</span><span class="chain-val muted">Validate $285/sf assumption</span></div>
+    <div class="cost-row upgrade"><span class="cost-key">5. Target dev cash raise: $7–9M</span><span class="chain-val green">Syndicate or fund</span></div>
+  </div>
+</section>
+
+<footer>
+  TRMIG · 2759–2763 Kingston Rd · Heal House Blend · March 2, 2026<br>
+  <a href="scenarios.html">← Stress Test</a> &nbsp;·&nbsp; <a href="index.html">Full Assessment</a>
+</footer>
+
+</body>
+</html>
